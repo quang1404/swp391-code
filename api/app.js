@@ -3,8 +3,13 @@ const path = require("path");
 const mysql = require("mysql");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
-const authRoutes = require('./routes/auth'); 
-const homeRoutes = require('./routes/homeRoutes');
+const authRoutes = require('./routes/auth');
+const homeRoutes = require('./routes/homeRoutes'); 
+const koiRoutes = require('./routes/koiRoutes');
+const koiGrowthRoutes = require('./routes/koiGrowthRoutes');
+const pondRoutes = require('./routes/pondRoutes');
+const productRoutes = require('./routes/productRoutes');
+const waterValueRoutes = require('./routes/waterValueRoutes');
 
 const jwt = require("jsonwebtoken");
 
@@ -28,8 +33,13 @@ app.use(express.json());
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use('/auth', authRoutes);
+app.use('/auth', authRoutes); 
 app.use('/', homeRoutes); 
+app.use('/koi', koiRoutes);
+app.use('/koiGrowth', koiGrowthRoutes);
+app.use('/pond', pondRoutes);
+app.use('/product', productRoutes);
+app.use('/waterValue', waterValueRoutes);
 
 db.connect((error) => {
     if (error) {
