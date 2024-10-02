@@ -19,7 +19,7 @@ const getKoiById = (id, callback) => {
 const createKoi = (name, image, body_shape, age, size, weight, gender, breed, origin, selling_price, pond_id, callback) => {
     const query = `
         INSERT INTO Koi (name, image, body_shape, age, size, weight, gender, breed, origin, selling_price, pond_id)
-        VALUES ('?', '?', '?', ?, ?, ?, '?', '?', '?', ?, ?);`;
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
     db.query(query, [name, image, body_shape, age, size, weight, gender, breed, origin, selling_price, pond_id], (error, results) => {
         if (error) {
             return callback(error, null);

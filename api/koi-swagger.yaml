@@ -8,6 +8,39 @@ servers:
     description: Local development server
 
 paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+
+                password_confirm:
+                  type: string
+                  format: password
+                role_id:
+                  type: integer
+                  description: ID of the role
+      responses:
+        "201":
+          description: User registered successfully
+        "400":
+          description: Bad Request (e.g., missing fields, passwords don't match)
+        "500":
+          description: Internal Server Error
+
   /auth/login:
     post:
       summary: Login an existing user
@@ -45,39 +78,12 @@ paths:
                         type: string
                       email:
                         type: string
+                      role_id:
+                        type: integer
         "400":
           description: Bad Request (e.g., missing fields)
         "401":
           description: Unauthorized (invalid credentials)
-        "500":
-          description: Internal Server Error
-
-  /auth/register:
-    post:
-      summary: Register a new user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-                  format: password
-                password_confirm:
-                  type: string
-                  format: password
-      responses:
-        "201":
-          description: User registered successfully
-        "400":
-          description: Bad Request (e.g., missing fields, passwords don't match)
         "500":
           description: Internal Server Error
 
@@ -109,15 +115,17 @@ paths:
                       name:
                         type: string
                       email:
-                        type: string                                                                                                     
-        '401':
+                        type: string
+                      role_id:
+                        type: integer
+        "401":
           description: Unauthorized (missing or invalid token)
-        '403':
+        "403":
           description: Forbidden (user not authorized to view this profile)
-        '404':
+        "404":
           description: User not found
-        '500':
-          description: Internal Server Error  
+        "500":
+          description: Internal Server Error
 
     put:
       summary: Update user profile
@@ -132,7 +140,7 @@ paths:
         required: true
         content:
           application/json:
-            schema:  
+            schema:
               type: object
               properties:
                 name:
@@ -140,25 +148,561 @@ paths:
                 email:
                   type: string
                   format: email
-                # Add other updatable profile fields as needed
+
       security:
-        - bearerAuth: [] 
+        - bearerAuth: []
       responses:
-        '200':
+        "200":
           description: Profile updated successfully
-        '401':
+        "401":
           description: Unauthorized (missing or invalid token)
-        '403':
+        "403":
           description: Forbidden (user not authorized to update this profile)
-        '404':
+        "404":
           description: User not found
-        '500':
+        "500":
           description: Internal Server Error
+
+  /koi:
+    get:
+      summary: Get all koi
+      responses:
+        "200":
+          description: A list of all koi
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    image:
+                      type: string
+                    body_shape:
+                      type: string
+                    age:
+                      type: integer
+                    size:
+                      type: number
+                      format: float
+                    weight:
+                      type: number
+                      format: float
+                    gender:
+                      type: string
+                    breed:
+                      type: string
+                    origin:
+                      type: string
+                    selling_price:
+                      type: number
+                      format: float
+                    pond_id:
+                      type: integer
+
+  /koi/{id}:
+    get:
+      summary: Get koi by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the koi
+      responses:
+        "200":
+          description: Koi retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  image:
+                    type: string
+                  body_shape:
+                    type: string
+                  age:
+                    type: integer
+                  size:
+                    type: number
+                    format: float
+                  weight:
+                    type: number
+                    format: float
+                  gender:
+                    type: string
+                  breed:
+                    type: string
+                  origin:
+                    type: string
+                  selling_price:
+                    type: number
+                    format: float
+                  pond_id:
+                    type: integer
+        "404":
+          description: Koi not found
+
+    put:
+      summary: Update koi by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the koi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                image:
+                  type: string
+                body_shape:
+                  type: string
+                age:
+                  type: integer
+                size:
+                  type: number
+                  format: float
+                weight:
+                  type: number
+                  format: float
+                gender:
+                  type: string
+                breed:
+                  type: string
+                origin:
+                  type: string
+                selling_price:
+                  type: number
+                  format: float
+                pond_id:
+                  type: integer
+      responses:
+        "200":
+          description: Koi updated successfully
+        "404":
+          description: Koi not found
+
+    delete:
+      summary: Delete koi by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the koi
+      responses:
+        "200":
+          description: Koi deleted successfully
+        "404":
+          description: Koi not found
+
+  /koiGrowth/{id}:
+    get:
+      summary: Get koi growth record by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the koi growth record
+      responses:
+        "200":
+          description: Koi growth record retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  growth_date:
+                    type: string
+                    format: date
+                  age:
+                    type: integer
+                  size:
+                    type: number
+                    format: float
+                  weight:
+                    type: number
+                    format: float
+                  koi_id:
+                    type: integer
+        "404":
+          description: Koi growth record not found
+
+    put:
+      summary: Update koi growth record by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the koi growth record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                growth_date:
+                  type: string
+                  format: date
+                age:
+                  type: integer
+                size:
+                  type: number
+                  format: float
+                weight:
+                  type: number
+                  format: float
+      responses:
+        "200":
+          description: Koi growth record updated successfully
+        "404":
+          description: Koi growth record not found
+
+  /pond:
+    get:
+      summary: Get all ponds
+      responses:
+        "200":
+          description: A list of all ponds
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  # Pond object schema
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    image:
+                      type: string
+                    size:
+                      type: number
+                      format: float
+                    depth:
+                      type: number
+                      format: float
+                    volume:
+                      type: number
+                      format: float
+                    num_of_drains:
+                      type: integer
+                    pump_capacity:
+                      type: number
+                      format: float
+                    user_id:
+                      type: integer
+
+  /pond/{id}:
+    get:
+      summary: Get pond by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the pond
+      responses:
+        "200":
+          description: Pond retrieved successfully
+          content:
+            application/json:
+              schema:
+                # Pond object schema
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  image:
+                    type: string
+                  size:
+                    type: number
+                    format: float
+                  depth:
+                    type: number
+                    format: float
+                  volume:
+                    type: number
+                    format: float
+                  num_of_drains:
+                    type: integer
+                  pump_capacity:
+                    type: number
+                    format: float
+                  user_id:
+                    type: integer
+        "404":
+          description: Pond not found
+
+    put:
+      summary: Update pond by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the pond
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              # Pond object schema (with updatable properties)
+              type: object
+              properties:
+                name:
+                  type: string
+                image:
+                  type: string
+                size:
+                  type: number
+                  format: float
+                depth:
+                  type: number
+                  format: float
+                volume:
+                  type: number
+                  format: float
+                num_of_drains:
+                  type: integer
+                pump_capacity:
+                  type: number
+                  format: float
+                # user_id is not typically updated here
+      responses:
+        "200":
+          description: Pond updated successfully
+        "404":
+          description: Pond not found
+
+    delete:
+      summary: Delete pond by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the pond
+      responses:
+        "200":
+          description: Pond deleted successfully
+        "404":
+          description: Pond not found
+
+  /product:
+    get:
+      summary: Get all products
+      responses:
+        "200":
+          description: A list of all products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  # Product object schema
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    price:
+                      type: number
+                      format: float
+                    quantity:
+                      type: integer
+
+  /product/{id}:
+    get:
+      summary: Get product by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the product
+      responses:
+        "200":
+          description: Product retrieved successfully
+          content:
+            application/json:
+              schema:
+                # Product object schema
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  price:
+                    type: number
+                    format: float
+                  quantity:
+                    type: integer
+        "404":
+          description: Product not found
+
+    put:
+      summary: Update product by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              # Product object schema (with updatable properties)
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+                  format: float
+                quantity:
+                  type: integer
+      responses:
+        "200":
+          description: Product updated successfully
+        "404":
+          description: Product not found
+
+    delete:
+      summary: Delete product by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the product
+      responses:
+        "200":
+          description: Product deleted successfully
+        "404":
+          description: Product not found
+
+  /waterValue:
+    get:
+      summary: Get all water parameter values
+      responses:
+        "200":
+          description: A list of all water parameter values
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    param_value:
+                      type: number
+                      format: float
+                    water_parameters_id:
+                      type: integer
+
+  /role/{id}:
+    get:
+      summary: Get role by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the role
+      responses:
+        "200":
+          description: Role retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+        "404":
+          description: Role not found
+
+    put:
+      summary: Update role by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the role
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        "200":
+          description: Role updated successfully
+        "404":
+          description: Role not found
+
 
 components:
   securitySchemes:
-    bearerAuth:           
+    bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT 
-                    
+      bearerFormat: JWT
