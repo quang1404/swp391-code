@@ -10,7 +10,8 @@ const getProductById = (id, callback) => {
         if (results.length > 0) {
             return callback(null, results[0]); 
         } else {
-            return callback(null, null); 
+            return callback(null,   
+ null); 
         }
     });
 };
@@ -20,7 +21,7 @@ const createProduct = (id, name, description, price, quantity, callback) => {
     const query = `
         INSERT INTO Product (id, name, description, price, quantity)
         VALUES (?, '?', '?', ?, ?);`;
-    db.query(query, [name, description, price, quantity], (error, results) => {
+    db.query(query, [id, name, description, price, quantity], (error, results) => {
         if (error) {
             return callback(error, null);
         }
@@ -43,7 +44,7 @@ const updateProductById = (id, name, description, price, quantity, callback) => 
 
 // Delete product by ID
 const deleteProductById = (id, callback) => {
-    const query = `DELETE Product WHERE id = ?;`;
+    const query = `DELETE FROM Product WHERE id = ?;`; // Added FROM for clarity
     db.query(query, [id], (error, results) => {
         if (error) {
             return callback(error, null);
@@ -52,9 +53,21 @@ const deleteProductById = (id, callback) => {
     });
 };
 
+// Get all products
+const getAllProducts = (callback) => {
+    const query = `SELECT * FROM Product;`;
+    db.query(query, (error, results) => {
+        if (error) {
+            return callback(error, null);
+        }
+        return callback(null, results); 
+    });
+};
+
 module.exports = {
     getProductById,
     createProduct,
     updateProductById,
-    deleteProductById
+    deleteProductById,
+    getAllProducts 
 };
