@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
+// Home route
 router.get('/', (req, res) => {
-    res.render('../view/index');
+    res.render('index');
 });
 
 router.get('/register', (req, res) => {
-    res.render('../view/register');
+    res.render('register');
 });
 
 module.exports = router;

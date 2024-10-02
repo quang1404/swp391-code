@@ -6,8 +6,9 @@ const { generateToken } = require('../utils/helper');
 const User = require('../models/user');
 const { verifyToken } = require('../middleware/authMiddleware');
 
-//login
-router.post('/login', verifyToken, (req, res) => {
+
+// Login
+router.post('/login', (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -25,7 +26,7 @@ router.post('/login', verifyToken, (req, res) => {
             if (user) {
                 const isMatch = await bcrypt.compare(password, user.password);
                 if (isMatch) {
-                    const token = generateToken(user.id); 
+                    const token = generateToken(user.id);
                     return res.json({
                         message: "Login successful",
                         token,
@@ -52,11 +53,10 @@ router.post('/login', verifyToken, (req, res) => {
     }
 });
 
-// register
+// Register
 router.post('/register', async (req, res) => {
     try {
-        const
-            { name, email, password, password_confirm } = req.body;
+        const { name, email, password, password_confirm } = req.body;
 
         if (!name || !email || !password || !password_confirm) {
             return res.status(400).json({ message: "Please fill in all fields" });
@@ -84,9 +84,10 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// view profile
-router.get('/profile/:userId', verifyToken, (req, res) => {
+// View Profile 
+router.get('/profile/:userId', verifyToken, (req, res) => { 
     const userId = req.params.userId;
+
     console.log("Authenticated user ID:", req.userId);
 
     User.getUserById(userId, (error, user) => {
@@ -96,9 +97,8 @@ router.get('/profile/:userId', verifyToken, (req, res) => {
         }
 
         if (!user) {
-            return res.status(404).json({
-                message: 'User not found'
-            });
+            return res.status(404).json({ message: 'User not found'   
+ });
         }
 
         const { password, ...userData } = user;
@@ -107,7 +107,7 @@ router.get('/profile/:userId', verifyToken, (req, res) => {
     });
 });
 
-// update profile 
+// Update Profile
 router.put('/profile/:userId', verifyToken, (req, res) => {
     const userId = req.params.userId;
     const updatedUserData = req.body;

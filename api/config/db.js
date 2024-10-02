@@ -15,7 +15,7 @@ db.connect((error) => {
     if (error) {
         console.log(error)
     } else {
-        console.log("")
+        console.log("MYSQL Connected")
     }
 });
 
