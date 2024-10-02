@@ -10,7 +10,8 @@ const getPondById = (id, callback) => {
         if (results.length > 0) {
             return callback(null, results[0]); 
         } else {
-            return callback(null, null); 
+            return callback(null,   
+ null); 
         }
     });
 };
@@ -20,7 +21,7 @@ const createPond = (id, name, image, size, depth, volume, num_of_drains, pump_ca
     const query = `
         INSERT INTO Pond (id, name, image, size, depth, volume, num_of_drains, pump_capacity, user_id)
         VALUES (?, '?', '?', ?, ?, ?, ?, ?, ?);`;
-    db.query(query, [name, image, size, depth, volume, num_of_drains, pump_capacity, user_id], (error, results) => {
+    db.query(query, [id, name, image, size, depth, volume, num_of_drains, pump_capacity, user_id], (error, results) => {
         if (error) {
             return callback(error, null);
         }
@@ -30,7 +31,7 @@ const createPond = (id, name, image, size, depth, volume, num_of_drains, pump_ca
 
 // Update pond by ID
 const updatePondById = (id, name, image, size, depth, volume, num_of_drains, pump_capacity, user_id, callback) => {
-    const query = `UPDATE Product
+    const query = `UPDATE Pond  
     SET name = '?', image = '?', size = ?, depth = ?, volume = ?, num_of_drains = ?, pump_capacity = ?, user_id = ?
     WHERE id = ?;`;
     db.query(query, [name, image, size, depth, volume, num_of_drains, pump_capacity, user_id, id], (error, results) => {
@@ -43,7 +44,7 @@ const updatePondById = (id, name, image, size, depth, volume, num_of_drains, pum
 
 // Delete pond by ID
 const deletePondById = (id, callback) => {
-    const query = `DELETE Product WHERE id = ?;`;
+    const query = `DELETE FROM Pond WHERE id = ?;`;
     db.query(query, [id], (error, results) => {
         if (error) {
             return callback(error, null);
@@ -52,9 +53,21 @@ const deletePondById = (id, callback) => {
     });
 };
 
+// Get all pond
+const getAllPonds = (callback) => {
+    const query = `SELECT * FROM Pond;`;
+    db.query(query, (error, results) => {
+        if (error) {
+            return callback(error, null);
+        }
+        return callback(null, results); 
+    });
+};
+
 module.exports = {
     getPondById,
     createPond,
     updatePondById,
-    deletePondById
+    deletePondById,
+    getAllPonds 
 };
