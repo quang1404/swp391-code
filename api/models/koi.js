@@ -52,9 +52,21 @@ const deleteKoiById = (id, callback) => {
     });
 };
 
+// Get all koi
+const getAllKoi = (callback) => {
+    const query = `SELECT * FROM Koi;`;
+    db.query(query, (error, results) => {
+        if (error) {
+            return callback(error, null);
+        }
+        return callback(null, results); 
+    });
+};
+
 module.exports = {
     getKoiById,
     createKoi,
     updateKoiById,
-    deleteKoiById
+    deleteKoiById,
+    getAllKoi
 };
