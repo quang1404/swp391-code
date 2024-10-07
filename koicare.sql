@@ -79,6 +79,7 @@ CREATE TABLE `Order` (
   `order_date` DATETIME,
   `total_amount` DECIMAL(10, 2),
   `user_id` BIGINT,
+  `status` ENUM('pending', 'processing', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
   FOREIGN KEY (`user_id`) REFERENCES `User` (`id`)
 );
 
@@ -86,6 +87,7 @@ CREATE TABLE `Order_Product` (
   `order_id` BIGINT,
   `product_id` BIGINT,
   `quantity` INT NOT NULL,
+  `price` DECIMAL(10, 2) NOT NULL, 
   PRIMARY KEY (`order_id`, `product_id`),
   FOREIGN KEY (`order_id`) REFERENCES `Order` (`id`),
   FOREIGN KEY (`product_id`) REFERENCES `Product` (`id`)
@@ -97,7 +99,7 @@ CREATE TABLE `News_blog` (
   `title` VARCHAR(255),
   `content` TEXT,
   `date_published` DATETIME,
-  `user_id` bigint, 
+  `user_id` BIGINT, 
   FOREIGN KEY (`user_id`) REFERENCES `User` (`id`)
 );
 
@@ -198,18 +200,18 @@ INSERT INTO `Product` (`id`, `name`, `description`, `price`, `quantity`) VALUES
 (4, 'Salt', 'Improves water salinity.', 10.000, 49);
 
 -- Order Values
-INSERT INTO `Order` (`id`, `order_date`, `total_amount`, `user_id`) VALUES
-(1, '2024-09-17 12:00:00', 50.000, 1), -- TranThinh order
-(2, '2024-09-17 13:00:00', 150.000, 2), -- DucQuang order
-(3, '2024-09-17 14:00:00', 60.000, 3), -- PhuongNam order
-(4, '2024-09-17 15:00:00', 90.000, 4); -- KietNguyen order
+INSERT INTO `Order` (`id`, `order_date`, `total_amount`, `user_id`, `status`) VALUES
+(1, '2024-09-17 12:00:00', 50.000, 1, 'pending'), -- TranThinh order
+(2, '2024-09-17 13:00:00', 150.000, 2, 'processing'), -- DucQuang order
+(3, '2024-09-17 14:00:00', 60.000, 3, 'cancelled'), -- PhuongNam order
+(4, '2024-09-17 15:00:00', 90.000, 4,'shipped'); -- KietNguyen order
 
 -- Order_Product Values
-INSERT INTO `Order_Product` (`order_id`, `product_id`, `quantity`) VALUES
-(1, 1, 2), -- 2 units of Koi Food in TranThinh order
-(2, 3, 2), -- 2 units of Thermometer in DucQuang order
-(3, 1, 1), -- 1 units of Koi Food in PhuongNam order
-(4, 4, 2); -- 2 units of Salt in KietNguyen order
+INSERT INTO `Order_Product` (`order_id`, `product_id`, `quantity`, `price`) VALUES
+(1, 1, 2, 100.000), -- 2 units of Koi Food in TranThinh order
+(2, 3, 2, 48.000), -- 2 units of Thermometer in DucQuang order
+(3, 1, 1, 50.000), -- 1 units of Koi Food in PhuongNam order
+(4, 4, 2, 70.000); -- 2 units of Salt in KietNguyen order
 
 -- Article Values
 INSERT INTO `News_blog` (`id`, `image`, `title`, `content`, `date_published`) VALUES
@@ -233,4 +235,5 @@ GROUP BY
 Update `Koi`
 Set size = 81.0, weight = 8.8
 Where id = 4
+
 
