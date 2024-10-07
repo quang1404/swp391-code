@@ -3,13 +3,15 @@ const path = require("path");
 const mysql = require("mysql");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
+
 const authRoutes = require('./routes/auth');
-const homeRoutes = require('./routes/homeRoutes'); 
+const homeRoutes = require('./routes/homeRoutes');
 const koiRoutes = require('./routes/koiRoutes');
 const koiGrowthRoutes = require('./routes/koiGrowthRoutes');
 const pondRoutes = require('./routes/pondRoutes');
 const productRoutes = require('./routes/productRoutes');
 const waterValueRoutes = require('./routes/waterValueRoutes');
+const cartRoutes = require('./routes/cartRoutes'); 
 
 dotenv.config({ path: './.env' }); 
 
@@ -19,6 +21,7 @@ const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
+
     database: process.env.DATABASE
 
 });
@@ -31,13 +34,16 @@ app.use(express.json());
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use('/auth', authRoutes); 
-app.use('/', homeRoutes); 
+
+// Use the routes
+app.use('/auth', authRoutes);
+app.use('/', homeRoutes);
 app.use('/koi', koiRoutes);
 app.use('/koiGrowth', koiGrowthRoutes);
 app.use('/pond', pondRoutes);
 app.use('/product', productRoutes);
 app.use('/waterValue', waterValueRoutes);
+app.use('/cart', cartRoutes); 
 
 db.connect((error) => {
     if (error) {
@@ -51,6 +57,7 @@ app.get("/", (req, res) => {
     res.render('index');
 });
 
-app.listen(3000, () => {
-    console.log("Server started on Port 3000");
-});
+app.listen(3000,
+    () => {
+        console.log("Server started on Port 3000");
+    });
