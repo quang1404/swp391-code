@@ -101,6 +101,21 @@ CREATE TABLE `News_blog` (
   FOREIGN KEY (`user_id`) REFERENCES `User` (`id`)
 );
 
+CREATE TABLE `Cart` (
+    `id` BIGINT PRIMARY KEY,
+    `user_id` BIGINT,   
+    FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) 
+);
+
+CREATE TABLE `Cart_item` (
+    `cart_id` BIGINT ,
+    `product_id` BIGINT ,
+    `quantity` INT ,
+    PRIMARY KEY (`cart_id`, `product_id`), 
+    FOREIGN KEY (`cart_id`) REFERENCES `Cart` (`id`),
+    FOREIGN KEY (`product_id`) REFERENCES `Product` (`id`)
+);
+
 -- Role Values
 INSERT INTO `Role` (`id`, `name`) VALUES
 (1, 'Guest'),
