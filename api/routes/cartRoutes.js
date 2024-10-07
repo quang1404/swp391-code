@@ -20,7 +20,7 @@ router.get('/', verifyToken, (req, res) => {
 router.post('/', verifyToken, (req, res) => {
     const userId = req.userId;
     const { productId, quantity } = req.body;
-
+    
     Cart.addItemToCart(userId, productId, quantity, (error, result) => {
         if (error) {
             console.error('Error adding item to cart:', error);

@@ -11,10 +11,10 @@ const koiGrowthRoutes = require('./routes/koiGrowthRoutes');
 const pondRoutes = require('./routes/pondRoutes');
 const productRoutes = require('./routes/productRoutes');
 const waterValueRoutes = require('./routes/waterValueRoutes');
-const cartRoutes = require('./routes/cartRoutes'); 
+const cartRoutes = require('./routes/cartRoutes');
+const orderRoutes = require('./routes/orderRoutes'); 
 
 dotenv.config({ path: './.env' }); 
-
 const app = express();
 
 const db = mysql.createConnection({
@@ -43,7 +43,8 @@ app.use('/koiGrowth', koiGrowthRoutes);
 app.use('/pond', pondRoutes);
 app.use('/product', productRoutes);
 app.use('/waterValue', waterValueRoutes);
-app.use('/cart', cartRoutes); 
+app.use('/cart', cartRoutes);
+app.use('/order', orderRoutes); 
 
 db.connect((error) => {
     if (error) {
