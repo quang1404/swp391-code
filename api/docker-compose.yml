@@ -1,0 +1,12 @@
+version: "3.9" 
+services:
+  mysql:
+    image: mysql:9.0.1  
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456789
+      MYSQL_DATABASE: koicaredb 
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 
+    ports:
+      - "3333:3306"
