@@ -46,7 +46,7 @@ app.use('/waterValue', waterValueRoutes);
 app.use('/cart', cartRoutes);
 app.use('/order', orderRoutes); 
 app.use('/newsBlog', newsBlogRoutes);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/swagger-ui', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 db.connect((error) => {
     if (error) {
@@ -60,7 +60,6 @@ app.get("/", (req, res) => {
     res.render('index');
 });
 
-app.listen(3000,
-    () => {
-        console.log("Server started on Port 3000");
-    });
+app.listen(8080, () => {
+    console.log("Server started on Port 8080");
+});
