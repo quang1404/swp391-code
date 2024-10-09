@@ -14,6 +14,9 @@ const waterValueRoutes = require('./routes/waterValueRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes'); 
 const newsBlogRoutes = require('./routes/newsBlogRoutes');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./koi_swagger.yaml');
 
 dotenv.config({ path: './.env' }); 
 const app = express();
@@ -43,6 +46,7 @@ app.use('/waterValue', waterValueRoutes);
 app.use('/cart', cartRoutes);
 app.use('/order', orderRoutes); 
 app.use('/newsBlog', newsBlogRoutes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 db.connect((error) => {
     if (error) {
