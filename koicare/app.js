@@ -3,6 +3,7 @@ const path = require("path");
 const mysql = require("mysql");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
+const cors = require('cors');
 
 const authRoutes = require('./routes/auth');
 const homeRoutes = require('./routes/homeRoutes');
@@ -21,6 +22,8 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 
 dotenv.config({ path: './.env' }); 
 const app = express();
+
+app.use(cors()); 
 
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
