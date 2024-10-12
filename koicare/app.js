@@ -17,6 +17,7 @@ const newsBlogRoutes = require('./routes/newsBlogRoutes');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./koi_swagger.yaml');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
 dotenv.config({ path: './.env' }); 
 const app = express();
@@ -47,6 +48,7 @@ app.use('/cart', cartRoutes);
 app.use('/order', orderRoutes); 
 app.use('/newsBlog', newsBlogRoutes);
 app.use('/swagger-ui', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/dashboard', dashboardRoutes);
 
 db.connect((error) => {
     if (error) {
