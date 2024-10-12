@@ -39,7 +39,6 @@ app.use(express.json());
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Use the routes
 app.use('/auth', authRoutes);
 app.use('/', homeRoutes);
 app.use('/koi', koiRoutes);

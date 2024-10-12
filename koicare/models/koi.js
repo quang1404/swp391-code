@@ -63,10 +63,35 @@ const getAllKoi = (callback) => {
     });
 };
 
+const getKoiWithFoodById = (id, callback) => {
+    const query = `
+        SELECT 
+            k.*,
+            ROUND(k.weight * 0.02, 2) AS food_required_kg_per_day //2% trọng lượng cơ thể
+        FROM 
+            Koi k
+        WHERE 
+            k.id = ?;  
+    `;
+    db.query(query, [id], (error, results) => {
+        if (error) {
+            return callback(error, null);
+        }
+        if (results.length > 0) {
+            return callback(null, results[0]); 
+        } else {
+            return callback(null,   
+ null); 
+        }
+    });
+};
+
+
 module.exports = {
     getKoiById,
     createKoi,
     updateKoiById,
     deleteKoiById,
-    getAllKoi
+    getAllKoi,
+    getKoiWithFoodById
 };

@@ -1,4 +1,4 @@
-const db = require('../config/db'); 
+const db = require('../config/db');
 
 // Get pond by ID
 const getPondById = (id, callback) => {
@@ -8,10 +8,10 @@ const getPondById = (id, callback) => {
             return callback(error, null);
         }
         if (results.length > 0) {
-            return callback(null, results[0]); 
+            return callback(null, results[0]);
         } else {
-            return callback(null,   
- null); 
+            return callback(null,
+                null);
         }
     });
 };
@@ -25,7 +25,7 @@ const createPond = (id, name, image, size, depth, volume, num_of_drains, pump_ca
         if (error) {
             return callback(error, null);
         }
-        return callback(null, results.affectedRows); 
+        return callback(null, results.affectedRows);
     });
 };
 
@@ -38,7 +38,7 @@ const updatePondById = (id, name, image, size, depth, volume, num_of_drains, pum
         if (error) {
             return callback(error, null);
         }
-        return callback(null, results.affectedRows); 
+        return callback(null, results.affectedRows);
     });
 };
 
@@ -49,7 +49,7 @@ const deletePondById = (id, callback) => {
         if (error) {
             return callback(error, null);
         }
-        return callback(null, results.affectedRows); 
+        return callback(null, results.affectedRows);
     });
 };
 
@@ -60,14 +60,46 @@ const getAllPonds = (callback) => {
         if (error) {
             return callback(error, null);
         }
-        return callback(null, results); 
+        return callback(null, results);
     });
 };
+
+// Calculate salt amount for a pond
+const getPondDetails = (pondId, callback) => {
+    const query = `
+      SELECT 
+        p.id AS pond_id,
+        p.name AS pond_name,
+        COUNT(k.id) AS koi_count,  
+        ROUND(p.volume * 0.003, 2) AS salt_kg_required //3% dung tích hồ
+      FROM 
+        Pond p
+      LEFT JOIN 
+        Koi k ON p.id = k.pond_id
+      WHERE 
+        p.id = ? 
+      GROUP BY 
+        p.id, p.name;
+    `;
+    db.query(query, [pondId], (error, results) => {
+        if (error) {
+            return callback(error, null);
+        }
+        if (results.length > 0) {
+            return callback(null, results[0]);
+        } else {
+            return callback(null,
+                null);
+        }
+    });
+};
+
 
 module.exports = {
     getPondById,
     createPond,
     updatePondById,
     deletePondById,
-    getAllPonds 
+    getAllPonds,
+    getPondDetails
 };

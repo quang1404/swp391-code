@@ -20,6 +20,11 @@ router.get('/:id', (req, res) => {
 // Create pond
 router.post('/', (req, res) => {
     const { id, name, image, size, depth, volume, num_of_drains, pump_capacity, user_id } = req.body;
+
+    if (!id || !name || !image || !size || !depth || !volume || !num_of_drains || !pump_capacity || !user_id) {
+        return res.status(400).json({ message: 'Missing required fields' });
+    }
+
     Pond.createPond(id, name, image, size, depth, volume, num_of_drains, pump_capacity, user_id, (error, result) => {
         if (error) {
             console.error('Error creating pond:', error);
@@ -34,6 +39,11 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
     const pondId = req.params.id;
     const { name, image, size, depth, volume, num_of_drains, pump_capacity, user_id } = req.body;
+
+    if (!name || !image || !size || !depth || !volume || !num_of_drains || !pump_capacity || !user_id) {
+        return res.status(400).json({ message: 'Missing required fields' });
+    }
+
     Pond.updatePondById(pondId, name, image, size, depth, volume, num_of_drains, pump_capacity, user_id, (error, result) => {
         if (error) {
             console.error('Error updating pond:', error);
@@ -68,9 +78,25 @@ router.get('/', (req, res) => {
             console.error('Error fetching ponds:', error);
             return res.status(500).json({ message: 'Internal server error' });
         } else {
-            res.json(ponds); 
+            res.json(ponds);
         }
     });
 });
+
+// Calculate salt amount for a pond
+router.get('/:id/details', (req, res) => {
+    const pondId = req.params.id;
+  
+    Pond.getPondDetails(pondId, (error, pondDetails) => {
+      if (error) {
+        console.error('Error fetching pond details:', error); 
+        return res.status(500).json({ message: 'Internal server error' }); 
+      } else if (pondDetails) {
+        res.json(pondDetails); 
+      } else {
+        res.status(404).json({ message: 'Pond not found' });
+      }
+    });
+  });
 
 module.exports = router;
