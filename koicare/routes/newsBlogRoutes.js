@@ -31,6 +31,11 @@ router.get('/:id', (req, res) => {
 // Create news blog
 router.post('/', (req, res) => {
   const { image, title, content, date_published, user_id } = req.body;
+
+  if (!image || !title || !content || !date_published || !user_id) {
+    return res.status(400).json({ message: 'Invalid input data. Please check all fields.' });
+  }
+
   NewsBlog.createNewsBlog(image, title, content, date_published, user_id, (error, result) => {
     if (error) {
       console.error('Error creating news blog:', error);
@@ -44,6 +49,11 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   const newsBlogId = req.params.id;
   const { image, title, content, date_published, user_id } = req.body;
+
+  if (!image || !title || !content || !date_published || !user_id) {
+    return res.status(400).json({ message: 'Invalid input data. Please check all fields.' });
+  }
+
   NewsBlog.updateNewsBlogById(newsBlogId, image, title, content, date_published, user_id, (error, result) => {
     if (error) {
       console.error('Error updating news blog:', error);
