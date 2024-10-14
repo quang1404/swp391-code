@@ -2,6 +2,14 @@ const db = require('../config/db');
 
 // create order
 const createOrder = (userId, orderItems, totalAmount, callback) => {
+
+    if (!orderItems || orderItems.length === 0) {
+        return callback(new Error('Order items cannot be empty'), null);
+    }
+    if (totalAmount <= 0) {
+        return callback(new Error('Total amount must be greater than 0'), null);
+    }
+
     db.beginTransaction((err) => {
         if (err) {
             return callback(err, null);
@@ -64,27 +72,33 @@ const getOrderById = (orderId, callback) => {
 
 // Update order by ID
 const updateOrderById = (orderId, updatedOrderData, callback) => {
+
+    const { orderItems, totalAmount, status } = updatedOrderData;
+    if (totalAmount && totalAmount <= 0) {
+        return callback(new Error('Total amount must be greater than 0'), null);
+    }
+    if (status && !['pending', 'processing', 'shipped', 'delivered', 'cancelled'].includes(status)) {
+        return callback(new Error('Invalid order status'), null);
+    }
+
     db.beginTransaction((err) => {
         if (err) {
             return callback(err, null);
         }
         try {
-            const { orderItems, ...orderData } = updatedOrderData; 
-
+            const { orderItems, ...orderData } = updatedOrderData;
             // Update the order in the Order table
             const orderQuery = `UPDATE \`Order\` SET ? WHERE id = ?`;
             db.query(orderQuery, [orderData, orderId], (error, orderResult) => {
                 if (error) {
                     throw error;
                 }
-
                 // Delete existing order items
                 const deleteOrderItemQuery = `DELETE FROM Order_Product WHERE order_id = ?`;
                 db.query(deleteOrderItemQuery, [orderId], (error, deleteResult) => {
                     if (error) {
                         throw error;
                     }
-
                     // Insert updated order items
                     if (orderItems && orderItems.length > 0) {
                         const orderItemValues = orderItems.map(item => [
