@@ -29,6 +29,11 @@ const getNewsBlogById = (id, callback) => {
 
 // Create news blog
 const createNewsBlog = (image, title, content, date_published, user_id, callback) => {
+  
+  if (!image || !title || !content || !date_published || !user_id) {
+    return callback(new Error('Invalid input data. Please check all fields.'), null);
+  }
+
   const query = `
     INSERT INTO News_blog (image, title, content, date_published, user_id)
     VALUES (?, ?, ?, ?, ?);
@@ -43,6 +48,11 @@ const createNewsBlog = (image, title, content, date_published, user_id, callback
 
 // Update news blog by ID
 const updateNewsBlogById = (id, image, title, content, date_published, user_id, callback) => {
+  
+  if (!image || !title || !content || !date_published || !user_id) {
+    return callback(new Error('Invalid input data. Please check all fields.'), null);
+  }
+
   const query = `
     UPDATE News_blog 
     SET image = ?, title = ?, content = ?, date_published = ?, user_id = ?
