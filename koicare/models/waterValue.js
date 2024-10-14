@@ -21,7 +21,7 @@ const createWaterParam = (name, param_value, water_parameters_id, callback) => {
     if (!name || !param_value || !water_parameters_id) {
         return callback(new Error('Invalid input data. Please check all fields.'), null);
     }
-
+    
     const query = `
     INSERT INTO Water_parameter_value (name, param_value, water_parameters_id)  
     VALUES (?, ?, ?);`;
