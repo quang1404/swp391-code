@@ -1,21 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const Order = require('../models/order');
-const { verifyToken } = require('../middleware/authMiddleware');   
-
+const { verifyToken } = require('../middleware/authMiddleware');
 
 // Create a new order
 router.post('/', verifyToken, (req, res) => {
-  const userId = req.userId; // Get user ID from authentication middleware
+  const userId = req.userId;
   const { orderItems, totalAmount } = req.body;
+
+  if (!orderItems || orderItems.length === 0) {
+    return res.status(400).json({ message: 'Order items cannot be empty' });
+  }
+  if (totalAmount <= 0) {
+    return res.status(400).json({ message: 'Total amount must be a positive number' });
+  }
 
   Order.createOrder(userId, orderItems, totalAmount, (error, orderId) => {
     if (error) {
       console.error('Error creating order:', error);
       return res.status(500).json({ message: 'Internal server error' });
     }
-    res.status(201).json({   
- message: 'Order created successfully', orderId });
+    res.status(201).json({ message: 'Order created successfully', orderId });
   });
 });
 
@@ -39,6 +44,14 @@ router.get('/:id', verifyToken, (req, res) => {
 router.put('/:id', verifyToken, (req, res) => {
   const orderId = req.params.id;
   const updatedOrderData = req.body;
+
+  const { orderItems, totalAmount, status } = updatedOrderData;
+  if (totalAmount && totalAmount <= 0) {
+    return res.status(400).json({ message: 'Total amount must be a positive number' });
+  }
+  if (status && !['pending', 'processing', 'shipped', 'delivered', 'cancelled'].includes(status)) {
+    return res.status(400).json({ message: 'Invalid order status' });
+  }
 
   Order.updateOrderById(orderId, updatedOrderData, (error, result) => {
     if (error) {
@@ -71,4 +84,3 @@ router.delete('/:id', verifyToken, (req, res) => {
 });
 
 module.exports = router;
-

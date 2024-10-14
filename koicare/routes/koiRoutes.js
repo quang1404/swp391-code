@@ -81,7 +81,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// Get koi with food calculation by ID
+// Calculate Koi Food
 router.get('/:id/food', (req, res) => {
     const koiId = req.params.id;
     Koi.getKoiWithFoodById(koiId, (error, koi) => {
