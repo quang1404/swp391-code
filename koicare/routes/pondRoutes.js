@@ -71,7 +71,7 @@ router.delete('/:id', (req, res) => {
     });
 });
 
-// Get all pond
+// Get all ponds
 router.get('/', (req, res) => {
     Pond.getAllPonds((error, ponds) => {
         if (error) {
@@ -86,17 +86,17 @@ router.get('/', (req, res) => {
 // Calculate salt amount for a pond
 router.get('/:id/details', (req, res) => {
     const pondId = req.params.id;
-  
+
     Pond.getPondDetails(pondId, (error, pondDetails) => {
-      if (error) {
-        console.error('Error fetching pond details:', error); 
-        return res.status(500).json({ message: 'Internal server error' }); 
-      } else if (pondDetails) {
-        res.json(pondDetails); 
-      } else {
-        res.status(404).json({ message: 'Pond not found' });
-      }
+        if (error) {
+            console.error('Error fetching pond details:', error);
+            return res.status(500).json({ message: 'Internal server error' });
+        } else if (pondDetails) {
+            res.json(pondDetails);
+        } else {
+            res.status(404).json({ message: 'Pond not found' });
+        }
     });
-  });
+});
 
 module.exports = router;
