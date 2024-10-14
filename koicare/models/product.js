@@ -66,13 +66,17 @@ const updateProductById = (id, name, description, price, quantity, callback) => 
 
 // Delete product by ID
 const deleteProductById = (id, callback) => {
-    const query = `DELETE FROM Product WHERE id = ?;`; // Added FROM for clarity
+    const query = `DELETE FROM Product WHERE id = ?;`; 
     db.query(query, [id], (error, results) => {
         if (error) {
-            return callback(error, null);
+          return callback(error, null); 
         }
-        return callback(null, results.affectedRows); 
-    });
+        if (results.affectedRows === 0) {
+          return callback(new Error('Product not found.'), null); 
+        } else {
+          return callback(null, results.affectedRows); 
+        }
+      });
 };
 
 // Get all products

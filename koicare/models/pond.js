@@ -18,39 +18,53 @@ const getPondById = (id, callback) => {
 
 // Create pond
 const createPond = (id, name, image, size, depth, volume, num_of_drains, pump_capacity, user_id, callback) => {
+    
+    if (!name || !image || size <= 0 || depth <= 0 || volume <= 0 || num_of_drains <= 0 || pump_capacity <= 0 || !user_id) {
+      return callback(new Error('Invalid input data. Please check all fields.'), null);
+    }
+  
     const query = `
-        INSERT INTO Pond (id, name, image, size, depth, volume, num_of_drains, pump_capacity, user_id)
-        VALUES (?, '?', '?', ?, ?, ?, ?, ?, ?);`;
+      INSERT INTO Pond (id, name, image, size, depth, volume, num_of_drains, pump_capacity, user_id)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
     db.query(query, [id, name, image, size, depth, volume, num_of_drains, pump_capacity, user_id], (error, results) => {
-        if (error) {
-            return callback(error, null);
-        }
-        return callback(null, results.affectedRows);
+      if (error) {
+        return callback(error, null);
+      }
+      return callback(null, results.affectedRows);
     });
-};
+  };
 
 // Update pond by ID
 const updatePondById = (id, name, image, size, depth, volume, num_of_drains, pump_capacity, user_id, callback) => {
+    // Input validation
+    if (!name || !image || size <= 0 || depth <= 0 || volume <= 0 || num_of_drains <= 0 || pump_capacity <= 0 || !user_id) {
+      return callback(new Error('Invalid input data. Please check all fields.'), null);
+    }
+  
     const query = `UPDATE Pond  
-    SET name = '?', image = '?', size = ?, depth = ?, volume = ?, num_of_drains = ?, pump_capacity = ?, user_id = ?
+    SET name = ?, image = ?, size = ?, depth = ?, volume = ?, num_of_drains = ?, pump_capacity = ?, user_id = ?
     WHERE id = ?;`;
     db.query(query, [name, image, size, depth, volume, num_of_drains, pump_capacity, user_id, id], (error, results) => {
-        if (error) {
-            return callback(error, null);
-        }
-        return callback(null, results.affectedRows);
+      if (error) {
+        return callback(error, null);
+      }
+      return callback(null, results.affectedRows);
     });
-};
+  };
 
 // Delete pond by ID
 const deletePondById = (id, callback) => {
     const query = `DELETE FROM Pond WHERE id = ?;`;
     db.query(query, [id], (error, results) => {
         if (error) {
-            return callback(error, null);
+          return callback(error, null); 
         }
-        return callback(null, results.affectedRows);
-    });
+        if (results.affectedRows === 0) {
+          return callback(new Error('Pond not found.'), null); 
+        } else {
+          return callback(null, results.affectedRows); 
+        }
+      });
 };
 
 // Get all pond
@@ -71,7 +85,7 @@ const getPondDetails = (pondId, callback) => {
         p.id AS pond_id,
         p.name AS pond_name,
         COUNT(k.id) AS koi_count,  
-        ROUND(p.volume * 0.003, 2) AS salt_kg_required //3% dung tích hồ
+        ROUND(p.volume * 0.003, 2) AS salt_kg_required 
       FROM 
         Pond p
       LEFT JOIN 
@@ -93,7 +107,6 @@ const getPondDetails = (pondId, callback) => {
         }
     });
 };
-
 
 module.exports = {
     getPondById,

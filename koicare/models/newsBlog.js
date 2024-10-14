@@ -71,9 +71,13 @@ const deleteNewsBlogById = (id, callback) => {
   const query = `DELETE FROM News_blog WHERE id = ?;`;
   db.query(query, [id], (error, results) => {
     if (error) {
-      return callback(error, null);
+      return callback(error, null); 
     }
-    return callback(null, results.affectedRows);
+    if (results.affectedRows === 0) {
+      return callback(new Error('NewsBlog not found.'), null); 
+    } else {
+      return callback(null, results.affectedRows); 
+    }
   });
 };
 

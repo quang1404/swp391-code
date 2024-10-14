@@ -59,14 +59,18 @@ const updateKoiById = (id, name, image, body_shape, age, size, weight, gender, b
 
 // Delete pond by ID
 const deleteKoiById = (id, callback) => {
-    const query = `DELETE Koi WHERE id = ?;`;
+    const query = `DELETE FROM Koi WHERE id = ?;`;
     db.query(query, [id], (error, results) => {
-        if (error) {
-            return callback(error, null);
-        }
-        return callback(null, results.affectedRows);
+      if (error) {
+        return callback(error, null); 
+      }
+      if (results.affectedRows === 0) {
+        return callback(new Error('Koi not found.'), null); 
+      } else {
+        return callback(null, results.affectedRows); 
+      }
     });
-};
+  };
 
 // Get all koi
 const getAllKoi = (callback) => {
