@@ -18,9 +18,20 @@ const getProductById = (id, callback) => {
 
 // Create product
 const createProduct = (id, name, description, price, quantity, callback) => {
+    
+    if (!name || !description || !price || !quantity) {
+        return callback(new Error('Missing required fields'), null);
+    }
+    if (price <= 0) {
+        return callback(new Error('Price must be greater than 0'), null);
+    }
+    if (quantity < 0) {
+        return callback(new Error('Quantity cannot be smaller than 0'), null);
+    }
+
     const query = `
         INSERT INTO Product (id, name, description, price, quantity)
-        VALUES (?, '?', '?', ?, ?);`;
+        VALUES (?, ?, ?, ?, ?);`;
     db.query(query, [id, name, description, price, quantity], (error, results) => {
         if (error) {
             return callback(error, null);
@@ -31,8 +42,19 @@ const createProduct = (id, name, description, price, quantity, callback) => {
 
 // Update product by ID
 const updateProductById = (id, name, description, price, quantity, callback) => {
+
+    if (!name || !description || !price || !quantity) {
+        return callback(new Error('Missing required fields'), null);
+    }
+    if (price <= 0) {
+        return callback(new Error('Price must be greater than 0'), null);
+    }
+    if (quantity < 0) {
+        return callback(new Error('Quantity cannot be smaller than 0'), null);
+    }
+
     const query = `UPDATE Product
-    SET name = '?', description = '?', price = ?, quantity = ?
+    SET name = ?, description = ?, price = ?, quantity = ?
     WHERE id = ?;`;
     db.query(query, [name, description, price, quantity, id], (error, results) => {
         if (error) {
