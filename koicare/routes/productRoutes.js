@@ -2,6 +2,19 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
 
+// Get all products
+router.get('/', (req, res) => {
+    Product.getAllProducts((error,
+        products) => {
+        if (error) {
+            console.error('Error fetching products:', error);
+            return res.status(500).json({ message: 'Internal server error' });
+        } else {
+            res.json(products);
+        }
+    });
+});
+
 // Get product by ID
 router.get('/:id', (req, res) => {
     const productId = req.params.id;
@@ -20,6 +33,17 @@ router.get('/:id', (req, res) => {
 // Create product
 router.post('/', (req, res) => {
     const { id, name, description, price, quantity } = req.body;
+
+    if (!id || !name || !description || !price || !quantity) {
+        return res.status(400).json({ message: 'Missing required fields' });
+    }
+    if (price <= 0) {
+        return res.status(400).json({ message: 'Price must be a positive number' });
+    }
+    if (quantity < 0) {
+        return res.status(400).json({ message: 'Quantity cannot be negative' });
+    }
+
     Product.createProduct(id, name, description, price, quantity, (error, result) => {
         if (error) {
             console.error('Error creating product:', error);
@@ -34,6 +58,17 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
     const productId = req.params.id;
     const { name, description, price, quantity } = req.body;
+
+    if (!name || !description || !price || !quantity) {
+        return res.status(400).json({ message: 'Missing required fields' });
+    }
+    if (price <= 0) {
+        return res.status(400).json({ message: 'Price must be a positive number' });
+    }
+    if (quantity < 0) {
+        return res.status(400).json({ message: 'Quantity cannot be negative' });
+    }
+
     Product.updateProductById(productId, name, description, price, quantity, (error, result) => {
         if (error) {
             console.error('Error updating product:', error);
@@ -57,19 +92,6 @@ router.delete('/:id', (req, res) => {
             res.json({ message: 'Product deleted' });
         } else {
             res.status(404).json({ message: 'Product not found' });
-        }
-    });
-});
-
-// Get all products
-router.get('/', (req, res) => {
-    Product.getAllProducts((error,   
- products) => {
-        if (error) {
-            console.error('Error fetching products:', error);
-            return res.status(500).json({ message: 'Internal server error' });
-        } else {
-            res.json(products); 
         }
     });
 });
