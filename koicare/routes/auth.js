@@ -20,15 +20,19 @@ router.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         User.createUser({ name, email, password: hashedPassword, role_id }, (error, results) => {
             if (error) {
-                console.log(error);
-                return res.status(500).json({ message: "Internal server error" });
+                console.error('Error registering user:', error);
+                if (error.code === 'ER_DUP_ENTRY') {
+                    return res.status(409).json({ message: 'Email already exists' });
+                } else {
+                    return res.status(500).json({ error: error.toString() });
+                }
             } else {
                 return res.status(201).json({ message: "User registered" });
             }
         });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Internal server error" });
+        console.error('Error in registration:', error); 
+        return res.status(500).json({ error: error.toString() });
     }
 });
 
@@ -44,7 +48,7 @@ router.post('/login', (req, res) => {
         User.getUserByEmail(email, async (error, user) => {
             if (error) {
                 console.log(error);
-                return res.status(500).json({ message: "Internal server error" });
+                return res.status(500).json({ error: error.toString() });
             }
             if (user) {
                 const isMatch = await bcrypt.compare(password, user.password);
@@ -69,7 +73,7 @@ router.post('/login', (req, res) => {
         });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ error: error.toString() });
     }
 });
 
@@ -82,7 +86,7 @@ router.get('/profile/:userId', verifyTokenMiddleware, (req, res) => {
     User.getUserById(userId, (error, user) => {
         if (error) {
             console.error('Error fetching user profile:', error);
-            return res.status(500).json({ message: 'Internal server error' });
+            return res.status(500).json({ error: error.toString() });
         }
 
         if (!user) {
@@ -112,7 +116,7 @@ router.put('/profile/:userId', verifyTokenMiddleware, (req, res) => {
     User.updateUserById(userId, updatedUserData, (error, affectedRows) => {
         if (error) {
             console.error('Error updating user profile:', error);
-            return res.status(500).json({ message: 'Internal server error' });
+            return res.status(500).json({ error: error.toString() });
         }
 
         if (affectedRows === 0) {
