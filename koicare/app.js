@@ -4,6 +4,7 @@ const mysql = require("mysql");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 const cors = require('cors');
+const https = require('https')
 
 const authRoutes = require('./routes/auth');
 const homeRoutes = require('./routes/homeRoutes');
@@ -19,6 +20,7 @@ const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./koi_swagger.yaml');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const db = require("./config/db");
 
 dotenv.config({ path: './.env' }); 
 const app = express();
@@ -31,12 +33,13 @@ const corsOptions = {
   
   app.use(cors(corsOptions));  
 
-const db = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE
-});
+// const db = mysql.createConnection({
+//     host: "127.0.0.1",
+//     port: 33060,
+//     user: "root",
+//     password: "123456789",
+//     database: "koicare"
+// });
 
 const publicDirectory = path.join(__dirname, './public');
 app.use(express.static(publicDirectory));
@@ -70,6 +73,8 @@ app.get("/", (req, res) => {
     res.render('index');
 });
 
-app.listen(3000, () => {
-    console.log("Server started on Port 3000");
-});
+https.createServer(app).listen(443)
+
+// app.listen(80, () => {
+//     console.log("Server started on Port 80");
+// });

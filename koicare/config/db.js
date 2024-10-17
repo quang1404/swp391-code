@@ -1,22 +1,21 @@
 const mysql = require("mysql");
 const dotenv = require("dotenv");
 dotenv.config({ path: '../.env' });
-console.log(process.env)
 
 const db = mysql.createConnection({
-  host: process.env.DATABASE_HOST,  
-  user: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD,
-
-  database: process.env.DATABASE  
+  host: "127.0.0.1",
+  port: 3333,
+  user: "root",
+  password: "123456789",
+  database: "koicaredb",
 });
 
-db.connect((error) => {
-  if (error) {
-    console.error("MySQL connection error:", error);  
-  } else {
-    console.log("MYSQL Connected");
-  }
-});
+// db.connect((error) => {
+//   if (error) {
+//     console.error("MySQL connection error:", error.message);  
+//   } else {
+//     console.log("MYSQL Connected");
+//   }
+// });
 
 module.exports = db
