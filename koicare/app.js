@@ -23,9 +23,13 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 dotenv.config({ path: './.env' }); 
 const app = express();
 
-app.use(cors({
-    origin: "http://localhost3000",
-})); 
+const corsOptions = {
+    origin: 'http://localhost:3000', 
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, 
+  };
+  
+  app.use(cors(corsOptions));  
 
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
