@@ -21,7 +21,7 @@ const updateKoiGrowthById = (id, updateKoiGrowthData, callback) => {
     
     const { growth_date, age, size, weight } = updateKoiGrowthData;
     if (!growth_date || age <= 0 || size <= 0 || weight <= 0) {
-        return callback(new Error('Invalid input data. Please check all fields.'), null);
+        return callback(new Error('Invalid input data'), null);
     }
 
     const query = `UPDATE KoiGrowth SET ? WHERE id = ?`; 

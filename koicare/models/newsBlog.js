@@ -31,7 +31,7 @@ const getNewsBlogById = (id, callback) => {
 const createNewsBlog = (image, title, content, date_published, user_id, callback) => {
   
   if (!image || !title || !content || !date_published || !user_id) {
-    return callback(new Error('Invalid input data. Please check all fields.'), null);
+    return callback(new Error('Invalid input data'), null);
   }
 
   const query = `
@@ -50,7 +50,7 @@ const createNewsBlog = (image, title, content, date_published, user_id, callback
 const updateNewsBlogById = (id, image, title, content, date_published, user_id, callback) => {
   
   if (!image || !title || !content || !date_published || !user_id) {
-    return callback(new Error('Invalid input data. Please check all fields.'), null);
+    return callback(new Error('Invalid input data'), null);
   }
 
   const query = `

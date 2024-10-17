@@ -42,7 +42,7 @@ const processCartItems = (items) => {
 
 // Add item to cart
 const addItemToCart = (userId, productId, quantity, callback) => {
-  
+
   if (quantity <= 0) {
     return callback(new Error('Quantity must be greater than 0'), null);
   }
@@ -93,15 +93,15 @@ const removeItemFromCart = (userId, productId, callback) => {
       WHERE cart_id = (SELECT id FROM Cart WHERE user_id = ?) AND product_id = ?;
     `;
   db.query(query, [userId, productId], (error, results) => {
-      if (error) {
-        return callback(error, null); 
-      }
-      if (results.affectedRows === 0) {
-        return callback(new Error('Item not found.'), null); 
-      } else {
-        return callback(null, results.affectedRows); 
-      }
-    });
+    if (error) {
+      return callback(error, null);
+    }
+    if (results.affectedRows === 0) {
+      return callback(new Error('Item not found.'), null);
+    } else {
+      return callback(null, results.affectedRows);
+    }
+  });
 };
 
 module.exports = {
@@ -110,3 +110,4 @@ module.exports = {
   updateCartItemQuantity,
   removeItemFromCart
 };
+

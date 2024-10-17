@@ -23,7 +23,9 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 dotenv.config({ path: './.env' }); 
 const app = express();
 
-app.use(cors()); 
+app.use(cors({
+    origin: "http://localhost3000",
+})); 
 
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
@@ -64,6 +66,6 @@ app.get("/", (req, res) => {
     res.render('index');
 });
 
-app.listen(8080, () => {
-    console.log("Server started on Port 8080");
+app.listen(3000, () => {
+    console.log("Server started on Port 3000");
 });

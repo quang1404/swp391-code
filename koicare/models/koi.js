@@ -19,7 +19,7 @@ const getKoiById = (id, callback) => {
 const createKoi = (name, image, body_shape, age, size, weight, gender, breed, origin, selling_price, pond_id, callback) => {
     // Input validation
     if (!name || !image || !body_shape || age <= 0 || size <= 0 || weight <= 0 || !gender || !breed || !origin || selling_price <= 0 || pond_id <= 0) {
-        return callback(new Error('Invalid input data. Please check all fields.'), null);
+        return callback(new Error('Invalid input data'), null);
     }
     if (!['male', 'female'].includes(gender)) {
         return callback(new Error('Invalid gender value. Must be "male" or "female".'), null);
@@ -40,7 +40,7 @@ const createKoi = (name, image, body_shape, age, size, weight, gender, breed, or
 const updateKoiById = (id, name, image, body_shape, age, size, weight, gender, breed, origin, selling_price, pond_id, callback) => {
     
     if (!name || !image || !body_shape || age <= 0 || size <= 0 || weight <= 0 || !gender || !breed || !origin || selling_price <= 0 || pond_id <= 0) {
-      return callback(new Error('Invalid input data. Please check all fields.'), null);
+      return callback(new Error('Invalid input data'), null);
     }
     if (!['male', 'female'].includes(gender)) {
       return callback(new Error('Invalid gender value. Must be "male" or "female".'), null);

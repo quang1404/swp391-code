@@ -28,7 +28,6 @@ paths:
                 password:
                   type: string
                   format: password
-
                 password_confirm:
                   type: string
                   format: password
