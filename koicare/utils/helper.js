@@ -2,15 +2,14 @@ const jwt = require('jsonwebtoken');
 
 // Generate JWT token
 const generateToken = (userId) => {
-    return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-        expiresIn: '1h' // hết hạn sau 1h
-    });
+    return jwt.sign({ id: userId },'secret', { expiresIn: 60 * 60 });
 };
 
 // Verify JWT token
-const verifyToken = (token) => {
+const verifyToken = (bearerToken) => {
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const token = bearerToken.split(' ')[1];
+        const decoded = jwt.verify(token, 'secret');
         return decoded; 
     } catch (err) {
         return null; 

@@ -4,7 +4,7 @@ info:
   description: API documentation for your web application
   version: 1.0.0
 servers:
-  - url: https://localhost:443
+  - url: http://localhost
     description: Local development server
 
 paths:
@@ -90,18 +90,11 @@ paths:
         "500":
           description: Internal Server Error
 
-  /auth/profile/{userId}:
+  /auth/profile:
     get:
       summary: View user profile
       tags:
         - Profile
-      parameters:
-        - in: path
-          name: userId
-          schema:
-            type: integer
-          required: true
-          description: ID of the user
       security:
         - bearerAuth: []
       responses:

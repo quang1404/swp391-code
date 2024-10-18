@@ -78,10 +78,8 @@ router.post('/login', (req, res) => {
 });
 
 // View Profile 
-router.get('/profile/:userId', verifyTokenMiddleware, (req, res) => {
-    const userId = req.params.userId;
-
-    console.log("Authenticated user ID:", req.userId);
+router.get('/profile', verifyTokenMiddleware, (req, res) => {
+    const userId = req.userId;
 
     User.getUserById(userId, (error, user) => {
         if (error) {
@@ -102,8 +100,8 @@ router.get('/profile/:userId', verifyTokenMiddleware, (req, res) => {
 });
 
 // Update Profile  
-router.put('/profile/:userId', verifyTokenMiddleware, (req, res) => {
-    const userId = req.params.userId;
+router.put('/profile/', verifyTokenMiddleware, (req, res) => {
+    const userId = req.userId;
     const updatedUserData = req.body;
 
     if (updatedUserData.name && updatedUserData.name.length === 0) {
