@@ -5,8 +5,7 @@ const databaseConfig = {
   port: process.env.DATABSE_PORT || 3333,
   user: process.env.DATABASE_USER || "root",
   password: process.env.DATABASE_PASSWORD || "123456789",
-  database: process.env.DATABASE_NAME || "koicaredb",
-  insecureAuth : false
+  database: process.env.DATABASE_NAME || "koicaredb"
 }
 console.log(databaseConfig)
 const db = mysql.createConnection(databaseConfig);
