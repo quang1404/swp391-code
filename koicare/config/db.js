@@ -1,15 +1,14 @@
-const mysql = require("mysql");
-const dotenv = require("dotenv");
-dotenv.config({ path: '../.env' });
+const mysql = require("mysql2");
 
 const databaseConfig = {
   host: process.env.DATABASE_HOST || "127.0.0.1",
   port: process.env.DATABSE_PORT || 3333,
   user: process.env.DATABASE_USER || "root",
   password: process.env.DATABASE_PASSWORD || "123456789",
-  database: process.env.DATABASE || "koicaredb",
+  database: process.env.DATABASE_NAME || "koicaredb",
+  insecureAuth : false
 }
-
+console.log(databaseConfig)
 const db = mysql.createConnection(databaseConfig);
 
 // db.connect((error) => {

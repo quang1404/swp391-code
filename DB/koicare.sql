@@ -1,11 +1,11 @@
 
 CREATE TABLE `Role` (
-  `id` BIGINT PRIMARY KEY,
+  `id` BIGINT PRIMARY KEY auto_increment ,
   `name` VARCHAR(255)
 );
 
 CREATE TABLE `User` (
-  `id` BIGINT PRIMARY KEY,
+  `id` BIGINT PRIMARY KEY auto_increment,
   `name` VARCHAR(255),
   `email` VARCHAR(255),
   `password` VARCHAR(255),
@@ -14,7 +14,7 @@ CREATE TABLE `User` (
 );
 
 CREATE TABLE `Pond` (
-  `id` BIGINT PRIMARY KEY,
+  `id` BIGINT PRIMARY KEY auto_increment,
   `name` VARCHAR(255),
   `image` VARCHAR(255),
   `size` FLOAT,
@@ -27,7 +27,7 @@ CREATE TABLE `Pond` (
 );
 
 CREATE TABLE `Koi` (
-  `id` BIGINT PRIMARY KEY,
+  `id` BIGINT PRIMARY KEY auto_increment,
   `name` VARCHAR(255),
   `image` VARCHAR(255),
   `body_shape` VARCHAR(255),
@@ -42,7 +42,7 @@ CREATE TABLE `Koi` (
 );
 
 CREATE TABLE `Koi_growth_record` (
-  `id` BIGINT PRIMARY KEY,
+  `id` BIGINT PRIMARY KEY auto_increment,
   `growth_date` DATE,
   `age` BIGINT,
   `size` FLOAT,
@@ -52,14 +52,14 @@ CREATE TABLE `Koi_growth_record` (
 );
 
 CREATE TABLE `Water_parameters` (
-  `id` BIGINT PRIMARY KEY,
+  `id` BIGINT PRIMARY KEY auto_increment,
   `measurement_time` DATETIME,
   `pond_id` BIGINT,
   FOREIGN KEY (`pond_id`) REFERENCES `Pond` (`id`)
 );
 
 CREATE TABLE `Water_parameter_value` (
-  `id` BIGINT PRIMARY KEY,
+  `id` BIGINT PRIMARY KEY auto_increment,
   `name` VARCHAR(255),
   `param_value` FLOAT,
   `water_parameters_id` BIGINT,
@@ -67,7 +67,7 @@ CREATE TABLE `Water_parameter_value` (
 );
 
 CREATE TABLE `Product` (
-  `id` BIGINT PRIMARY KEY,
+  `id` BIGINT PRIMARY KEY auto_increment,
   `name` VARCHAR(255),
   `description` TEXT,
   `price` DECIMAL(10, 2),
@@ -75,7 +75,7 @@ CREATE TABLE `Product` (
 );
 
 CREATE TABLE `Order` (
-  `id` BIGINT PRIMARY KEY,
+  `id` BIGINT PRIMARY KEY auto_increment,
   `order_date` DATETIME,
   `total_amount` DECIMAL(10, 2),
   `user_id` BIGINT,
@@ -94,7 +94,7 @@ CREATE TABLE `Order_Product` (
 );
 
 CREATE TABLE `News_blog` (
-  `id` BIGINT PRIMARY KEY,
+  `id` BIGINT PRIMARY KEY auto_increment,
   `image` VARCHAR(255),
   `title` VARCHAR(255),
   `content` TEXT,
@@ -104,7 +104,7 @@ CREATE TABLE `News_blog` (
 );
 
 CREATE TABLE `Cart` (
-    `id` BIGINT PRIMARY KEY,
+    `id` BIGINT PRIMARY KEY auto_increment,
     `user_id` BIGINT,   
     FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) 
 );
