@@ -10,7 +10,7 @@ const databaseConfig = {
   database: process.env.DATABASE || "koicaredb",
 }
 
-const db = mysql.createConnection();
+const db = mysql.createConnection(databaseConfig);
 
 // db.connect((error) => {
 //   if (error) {
