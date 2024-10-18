@@ -52,8 +52,8 @@ db.connect((error) => {
         console.log("MYSQL Connected")
     }
 });
+const port = process.env.PORT||80
 
-
-app.listen(80, () => {
-    console.log("Server started on Port 80");
+app.listen(port, () => {
+    console.log("Server started on Port: ", port);
 });

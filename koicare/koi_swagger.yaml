@@ -148,7 +148,7 @@ paths:
                 email:
                   type: string
                   format: email
-
+                  
       security:
         - bearerAuth: []
       responses:
