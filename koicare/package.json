@@ -4,9 +4,8 @@
   "main": "app.js",
   "scripts": {
     "test": "jest",
-    "start": "node koicare/app.js",
-    "dev": "nodemon app.js",
-    "build": "cd koicare && npm install"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
