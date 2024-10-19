@@ -148,15 +148,15 @@ INSERT INTO `Koi` (`id`, `name`, `image`, `body_shape`, `age`, `size`, `weight`,
 
 
 -- Koi Update Values
-INSERT INTO `Koi_growth_record` (`id`, `growth_date`, `size`, `weight`, `koi_id`) VALUES
-(1, '2024-09-17', 31.0, 1.6, 1),
-(2, '2024-09-17', 41.0, 2.1, 2),
-(3, '2024-09-17', 21.0, 1.1, 3),
-(4, '2024-09-17', 81.0, 8.1, 4),
-(5, '2024-09-18', 31.5, 1.7, 1),
-(6, '2024-09-18', 41.5, 2.2, 2),
-(7, '2024-09-18', 31.5, 1.2, 3),
-(8, '2024-09-18', 82.5, 8.3, 4);
+INSERT INTO `Koi_growth_record` (`id`, `growth_date`,`age`. `size`, `weight`, `koi_id`) VALUES
+(1, '2024-09-17',2, 31.0, 1.6, 1),
+(2, '2024-09-17',3,41.0, 2.1, 2),
+(3, '2024-09-17',1,21.0, 1.1, 3),
+(4, '2024-09-17',5,81.0, 8.1, 4),
+(5, '2024-09-18',2,31.5, 1.7, 1),
+(6, '2024-09-18',3,41.5, 2.2, 2),
+(7, '2024-09-18',1,31.5, 1.2, 3),
+(8, '2024-09-18',5,82.5, 8.3, 4);
 
 -- Water Parameters Update 
 INSERT INTO `Water_parameters` (`id`, `measurement_time`, `pond_id`) VALUES
