@@ -8,7 +8,7 @@ router.get('/:id', (req, res) => {
     Koi.getKoiById(koiId, (error, koi) => {
         if (error) {
             console.error('Error fetching koi:', error);
-            return res.status(500).json({ message: 'Internal server error' });
+            return res.status(500).json({ error: error.toString() });;
         } else if (koi) {
             res.json(koi);
         } else {
@@ -19,15 +19,15 @@ router.get('/:id', (req, res) => {
 
 // Create koi
 router.post('/', (req, res) => {
-    const { name, image, body_shape, age, size, weight, gender, breed, origin, selling_price, pond_id } = req.body;
-    if (!name || !image || !body_shape || !age || !size || !weight || !gender || !breed || !origin || !selling_price || !pond_id) {
+    const { name, image, body_shape, age, size, weight, gender, breed, origin, pond_id } = req.body;
+    if (!name || !image || !body_shape || !age || !size || !weight || !gender || !breed || !origin || !pond_id) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
 
-    Koi.createKoi(name, image, body_shape, age, size, weight, gender, breed, origin, selling_price, pond_id, (error, result) => {
+    Koi.createKoi(name, image, body_shape, age, size, weight, gender, breed, origin, pond_id, (error, result) => {
         if (error) {
             console.error('Error creating koi:', error);
-            return res.status(500).json({ message: 'Internal server error' });
+            return res.status(500).json({ error: error.toString() });;
         } else {
             res.status(201).json({ message: 'Koi created' });
         }
@@ -37,15 +37,15 @@ router.post('/', (req, res) => {
 // Update koi by ID
 router.put('/:id', (req, res) => {
     const koiId = req.params.id;
-    const { name, image, body_shape, age, size, weight, gender, breed, origin, selling_price, pond_id } = req.body;
-    if (!name || !image || !body_shape || !age || !size || !weight || !gender || !breed || !origin || !selling_price || !pond_id) {
+    const { name, image, body_shape, age, size, weight, gender, breed, origin, pond_id } = req.body;
+    if (!name || !image || !body_shape || !age || !size || !weight || !gender || !breed || !origin || !pond_id) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
 
-    Koi.updateKoiById(koiId, name, image, body_shape, age, size, weight, gender, breed, origin, selling_price, pond_id, (error, result) => {
+    Koi.updateKoiById(koiId, name, image, body_shape, age, size, weight, gender, breed, origin, pond_id, (error, result) => {
         if (error) {
             console.error('Error updating koi:', error);
-            return res.status(500).json({ message: 'Internal server error' });
+            return res.status(500).json({ error: error.toString() });;
         } else if (result === 1) {
             res.json({ message: 'Koi updated' });
         } else {
@@ -60,7 +60,7 @@ router.delete('/:id', (req, res) => {
     Koi.deleteKoiById(koiId, (error, result) => {
         if (error) {
             console.error('Error deleting koi:', error);
-            return res.status(500).json({ message: 'Internal server error' });
+            return res.status(500).json({ error: error.toString() });;
         } else if (result === 1) {
             res.json({ message: 'Koi deleted' });
         } else {
@@ -74,7 +74,7 @@ router.get('/', (req, res) => {
     Koi.getAllKoi((error, koi) => {
         if (error) {
             console.error('Error fetching koi:', error);
-            return res.status(500).json({ message: 'Internal server error' });
+            return res.status(500).json({ error: error.toString() });;
         } else {
             res.json(koi);
         }
@@ -87,7 +87,7 @@ router.get('/:id/food', (req, res) => {
     Koi.getKoiWithFoodById(koiId, (error, koi) => {
         if (error) {
             console.error('Error fetching koi with food:', error);
-            return res.status(500).json({ message: 'Internal server error' });
+            return res.status(500).json({ error: error.toString() });;
         } else if (koi) {
             res.json(koi);
         } else {

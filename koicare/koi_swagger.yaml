@@ -248,16 +248,13 @@ paths:
                   type: string
                 origin:
                   type: string
-                selling_price:
-                  type: number
-                  format: float
                 pond_id:
                   type: integer
       responses:
         "201":
           description: Koi created successfully
         "400":
-          description: Bad Request (e.g., invalid input)
+          description: Bad Request 
         "500":
           description: Internal server error
     get:
@@ -295,10 +292,7 @@ paths:
                     breed:
                       type: string
                     origin:
-                      type: string
-                    selling_price:
-                      type: number
-                      format: float
+                      type: string                  
                     pond_id:
                       type: integer
 
@@ -344,9 +338,6 @@ paths:
                     type: string
                   origin:
                     type: string
-                  selling_price:
-                    type: number
-                    format: float
                   pond_id:
                     type: integer
         "404":
@@ -390,9 +381,6 @@ paths:
                   type: string
                 origin:
                   type: string
-                selling_price:
-                  type: number
-                  format: float
                 pond_id:
                   type: integer
       responses:
@@ -447,7 +435,7 @@ paths:
         "201":
           description: Koi growth record created successfully
         "400":
-          description: Bad Request (e.g., invalid input)
+          description: Bad Request 
         "500":
           description: Internal server error
 
@@ -590,7 +578,7 @@ paths:
         "201":
           description: Pond created successfully
         "400":
-          description: Bad Request (e.g., invalid input)
+          description: Bad Request 
         "500":
           description: Internal server error
 
@@ -796,7 +784,7 @@ paths:
         "201":
           description: Product created successfully
         "400":
-          description: Bad Request (e.g., invalid input)
+          description: Bad Request 
         "500":
           description: Internal server error
 
@@ -933,10 +921,10 @@ paths:
         "201":
           description: Water parameter value created successfully
         "400":
-          description: Bad Request (e.g., invalid input)
+          description: Bad Request 
         "500":
           description: Internal server error
-          
+
     get:
       summary: Get all water parameter values
       tags:
