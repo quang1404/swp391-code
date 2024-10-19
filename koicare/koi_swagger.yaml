@@ -448,6 +448,34 @@ paths:
         "404":
           description: Koi growth record not found
 
+  /koi/{id}/food:
+    get:
+      summary: Get food calculation by koi ID
+      tags:
+        - Koi
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the koi
+      responses:
+        '200':
+          description: Koi retrieved successfully with food calculation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  food_required_kg_per_day:
+                    type: number
+                    format: float
+        '404':
+          description: Koi not found
+        '500':
+          description: Internal server error        
+
   /pond:
     get:
       summary: Get all ponds
@@ -589,6 +617,40 @@ paths:
           description: Pond deleted successfully
         "404":
           description: Pond not found
+
+  /pond/{id}/details:
+    get:
+      summary: Get the required amount of salt  
+      tags:
+        - Pond
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the pond
+      responses:
+        '200':
+          description: Pond details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pond_id:
+                    type: integer
+                  pond_name:
+                    type: string
+                  koi_count:  
+                    type: integer
+                  salt_kg_required:
+                    type: number
+                    format: float
+        '404':
+          description: Pond not found
+        '500':
+          description: Internal server error        
 
   /product:
     get:
