@@ -218,22 +218,3 @@ INSERT INTO `News_blog` (`id`, `image`, `title`, `content`, `date_published`) VA
 (1, 2, 'Koi Pond Maintenance Tips', 'Here are some tips to maintain your koi pond...', '2024-09-17 09:00:00');
 
 
--- Food and Salt Calculation
--- lấy lượng thức ăn dựa trên 2% cân nặng của cá và 3% lượng muối dựa trên dung lượng của hồ
-SELECT 
-    p.id AS pond_id,
-    p.name AS pond_name,
-    ROUND(SUM(k.weight * 0.02), 2) AS total_food_kg_per_day,
-    ROUND(p.volume * 0.003, 2) AS salt_kg_required
-FROM 
-    Pond p
-LEFT JOIN 
-    Koi k ON p.id = k.pond_id
-GROUP BY 
-    p.id, p.name;
-    
-Update `Koi`
-Set size = 81.0, weight = 8.8
-Where id = 4
-
-
