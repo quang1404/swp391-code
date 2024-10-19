@@ -148,7 +148,7 @@ paths:
                 email:
                   type: string
                   format: email
-                  
+
       security:
         - bearerAuth: []
       responses:
@@ -217,6 +217,49 @@ paths:
           description: Role not found
 
   /koi:
+    post:
+      summary: Create a new koi
+      tags:
+        - Koi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                image:
+                  type: string
+                body_shape:
+                  type: string
+                age:
+                  type: integer
+                size:
+                  type: number
+                  format: float
+                weight:
+                  type: number
+                  format: float
+                gender:
+                  type: string
+                breed:
+                  type: string
+                origin:
+                  type: string
+                selling_price:
+                  type: number
+                  format: float
+                pond_id:
+                  type: integer
+      responses:
+        "201":
+          description: Koi created successfully
+        "400":
+          description: Bad Request (e.g., invalid input)
+        "500":
+          description: Internal server error
     get:
       summary: Get all koi
       tags:
@@ -375,6 +418,39 @@ paths:
         "404":
           description: Koi not found
 
+  /koiGrowth:
+    post:
+      summary: Create a new koi growth record
+      tags:
+        - Koi Growth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                growth_date:
+                  type: string
+                  format: date
+                age:
+                  type: integer
+                size:
+                  type: number
+                  format: float
+                weight:
+                  type: number
+                  format: float
+                koi_id:
+                  type: integer
+      responses:
+        "201":
+          description: Koi growth record created successfully
+        "400":
+          description: Bad Request (e.g., invalid input)
+        "500":
+          description: Internal server error
+
   /koiGrowth/{id}:
     get:
       summary: Get koi growth record by ID
@@ -461,7 +537,7 @@ paths:
           required: true
           description: ID of the koi
       responses:
-        '200':
+        "200":
           description: Koi retrieved successfully with food calculation
           content:
             application/json:
@@ -471,12 +547,53 @@ paths:
                   food_required_kg_per_day:
                     type: number
                     format: float
-        '404':
+        "404":
           description: Koi not found
-        '500':
-          description: Internal server error        
+        "500":
+          description: Internal server error
 
   /pond:
+    post:
+      summary: Create a new pond
+      tags:
+        - Pond
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                image:
+                  type: string
+                size:
+                  type: number
+                  format: float
+                depth:
+                  type: number
+                  format: float
+                volume:
+                  type: number
+                  format: float
+                num_of_drains:
+                  type: integer
+                pump_capacity:
+                  type: number
+                  format: float
+                user_id:
+                  type: integer
+      responses:
+        "201":
+          description: Pond created successfully
+        "400":
+          description: Bad Request (e.g., invalid input)
+        "500":
+          description: Internal server error
+
     get:
       summary: Get all ponds
       tags:
@@ -620,7 +737,7 @@ paths:
 
   /pond/{id}/details:
     get:
-      summary: Get the required amount of salt  
+      summary: Get the required amount of salt
       tags:
         - Pond
       parameters:
@@ -631,7 +748,7 @@ paths:
           required: true
           description: ID of the pond
       responses:
-        '200':
+        "200":
           description: Pond details retrieved successfully
           content:
             application/json:
@@ -642,17 +759,47 @@ paths:
                     type: integer
                   pond_name:
                     type: string
-                  koi_count:  
+                  koi_count:
                     type: integer
                   salt_kg_required:
                     type: number
                     format: float
-        '404':
+        "404":
           description: Pond not found
-        '500':
-          description: Internal server error        
+        "500":
+          description: Internal server error
 
   /product:
+    post:
+      summary: Create a new product
+      tags:
+        - Product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+                  format: float
+                quantity:
+                  type: integer
+      responses:
+        "201":
+          description: Product created successfully
+        "400":
+          description: Bad Request (e.g., invalid input)
+        "500":
+          description: Internal server error
+
     get:
       summary: Get all products
       tags:
@@ -764,6 +911,32 @@ paths:
           description: Product not found
 
   /waterValue:
+    post:
+      summary: Create a new water parameter value
+      tags:
+        - Water Value
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                param_value:
+                  type: number
+                  format: float
+                water_parameters_id:
+                  type: integer
+      responses:
+        "201":
+          description: Water parameter value created successfully
+        "400":
+          description: Bad Request (e.g., invalid input)
+        "500":
+          description: Internal server error
+          
     get:
       summary: Get all water parameter values
       tags:
@@ -775,7 +948,7 @@ paths:
             application/json:
               schema:
                 type: array
-                items:               
+                items:
                   type: object
                 properties:
                   id:
@@ -807,18 +980,18 @@ paths:
           required: true
           description: Name of the water parameter value
       responses:
-          "200":
-            description: Water parameter value retrieved successfully
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    param_value: 
-                      type: number
-                  format: float
-          "404":
-            description: Water parameter value not found
+        "200":
+          description: Water parameter value retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  param_value:
+                    type: number
+                format: float
+        "404":
+          description: Water parameter value not found
 
     put:
       summary: Update water parameter value by ID and name
@@ -836,7 +1009,7 @@ paths:
           schema:
             type: string
           required: true
-          description: Name of the water parameter value  
+          description: Name of the water parameter value
       requestBody:
         required: true
         content:
@@ -848,9 +1021,9 @@ paths:
                   type: number
                   format: float
       responses:
-        '200':
+        "200":
           description: Water parameter value updated successfully
-        '404':
+        "404":
           description: Water parameter value not found
 
     delete:
@@ -858,18 +1031,18 @@ paths:
       tags:
         - Water Value
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-        description: ID of the water parameter
-      - in: path
-        name: name
-        schema:
-          type: string
-        required: true
-        description: Name of the water parameter value
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the water parameter
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+          description: Name of the water parameter value
       responses:
         "200":
           description: Water parameter value deleted successfully
@@ -882,19 +1055,19 @@ paths:
       tags:
         - Order
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
-            schema:  
+            schema:
               type: object
               properties:
                 orderItems:
                   type: array
                 items:
                   type: object
-                  properties: 
+                  properties:
                     product_id:
                       type: integer
                     quantity:
@@ -906,9 +1079,9 @@ paths:
                   type: number
                   format: float
       responses:
-        '201':
+        "201":
           description: Order created successfully
-        '500':
+        "500":
           description: Internal server error
 
   /order/{id}:
@@ -926,7 +1099,7 @@ paths:
           required: true
           description: ID of the order
       responses:
-        '200':
+        "200":
           description: Order retrieved successfully
           content:
             application/json:
@@ -960,7 +1133,7 @@ paths:
                           format: float
                         quantity:
                           type: integer
-        '404':
+        "404":
           description: Order not found
 
     put:
@@ -987,7 +1160,7 @@ paths:
                   type: array
                   items:
                     type: object
-                    properties:  
+                    properties:
                       product_id:
                         type: integer
                       quantity:
@@ -1002,9 +1175,9 @@ paths:
                   type: string
                   enum: [pending, processing, shipped, delivered, cancelled]
       responses:
-        '200':
+        "200":
           description: Order updated successfully
-        '404':
+        "404":
           description: Order not found
 
     delete:
@@ -1021,9 +1194,9 @@ paths:
           required: true
           description: ID of the order
       responses:
-        '200':
+        "200":
           description: Order deleted successfully
-        '404':
+        "404":
           description: Order not found
 
   /newsBlog:
@@ -1032,7 +1205,7 @@ paths:
       tags:
         - NewsBlog
       responses:
-        '200':
+        "200":
           description: A list of all news blogs
           content:
             application/json:
@@ -1068,7 +1241,7 @@ paths:
           required: true
           description: ID of the news blog
       responses:
-        '200':
+        "200":
           description: News blog retrieved successfully
           content:
             application/json:
@@ -1088,7 +1261,7 @@ paths:
                     format: date-time
                   user_id:
                     type: integer
-        '404':
+        "404":
           description: News blog not found
 
     put:
@@ -1119,9 +1292,9 @@ paths:
                   type: string
                   format: date-time
       responses:
-        '200':
+        "200":
           description: News blog updated successfully
-        '404':
+        "404":
           description: News blog not found
 
     delete:
@@ -1136,9 +1309,9 @@ paths:
           required: true
           description: ID of the news blog
       responses:
-        '200':
+        "200":
           description: News blog deleted successfully
-        '404':
+        "404":
           description: News blog not found
 
   /cart:
@@ -1149,13 +1322,13 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        '200':
+        "200":
           description: Cart retrieved successfully
           content:
             application/json:
               schema:
                 type: object
-                properties:  
+                properties:
                   cart_id:
                     type: integer
                   user_id:
@@ -1174,7 +1347,7 @@ paths:
                           format: float
                         quantity:
                           type: integer
-        '500':
+        "500":
           description: Internal server error
 
     post:
@@ -1190,14 +1363,14 @@ paths:
             schema:
               type: object
               properties:
-                productId:  
+                productId:
                   type: integer
                 quantity:
                   type: integer
       responses:
-        '201':
+        "201":
           description: Item added to cart
-        '500':
+        "500":
           description: Internal server error
 
   /cart/{productId}:
@@ -1224,9 +1397,9 @@ paths:
                 quantity:
                   type: integer
       responses:
-        '200':
+        "200":
           description: Cart item quantity updated
-        '500':
+        "500":
           description: Internal server error
 
     delete:
@@ -1243,11 +1416,10 @@ paths:
           required: true
           description: ID of the product
       responses:
-        '200':
+        "200":
           description: Item removed from cart
-        '500':
+        "500":
           description: Internal server error
-        
 
 components:
   securitySchemes:
