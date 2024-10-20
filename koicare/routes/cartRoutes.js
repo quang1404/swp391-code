@@ -1,17 +1,11 @@
-const express = require('express');
-const router = express.Router();
-const Cart = require('../models/cart');
-const { verifyToken } = require('../middleware/authMiddleware');   
- 
-
 // Get cart by user ID
 router.get('/', verifyToken, (req, res) => {
-  const userId = req.userId; 
+  const userId = req.userId;
 
   Cart.getCartByUserId(userId, (error, cart) => {
     if (error) {
       console.error('Error fetching cart:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ error: error.toString() });
     }
     res.json(cart);
   });
@@ -29,7 +23,10 @@ router.post('/', verifyToken, (req, res) => {
   Cart.addItemToCart(userId, productId, quantity, (error, result) => {
     if (error) {
       console.error('Error adding item to cart:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+      if (error.message === 'Product not found') {
+        return res.status(404).json({ message: error.message });
+      }
+      return res.status(500).json({ error: error.toString() });
     }
     res.status(201).json({ message: 'Item added to cart' });
   });
@@ -48,7 +45,10 @@ router.put('/:productId', verifyToken, (req, res) => {
   Cart.updateCartItemQuantity(userId, productId, quantity, (error, result) => {
     if (error) {
       console.error('Error updating cart item quantity:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ error: error.toString() });
+    }
+    if (result === 0) {
+      return res.status(404).json({ message: 'Cart item not found' });
     }
     res.json({ message: 'Cart item quantity updated' });
   });
@@ -62,7 +62,10 @@ router.delete('/:productId', verifyToken, (req, res) => {
   Cart.removeItemFromCart(userId, productId, (error, result) => {
     if (error) {
       console.error('Error removing item from cart:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ error: error.toString() });
+    }
+    if (result === 0) {
+      return res.status(404).json({ message: 'Item not found' });
     }
     res.json({ message: 'Item removed from cart' });
   });

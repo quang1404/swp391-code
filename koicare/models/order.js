@@ -80,6 +80,13 @@ const updateOrderById = (orderId, updatedOrderData, callback) => {
     if (status && !['pending', 'processing', 'shipped', 'delivered', 'cancelled'].includes(status)) {
         return callback(new Error('Invalid order status'), null);
     }
+    if (orderItems) {
+        for (const item of orderItems) {
+            if (item.quantity <= 0 || item.price <= 0) {
+                return callback(new Error('Invalid order item data'), null);
+            }
+        }
+    }
 
     db.beginTransaction((err) => {
         if (err) {

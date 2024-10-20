@@ -56,15 +56,19 @@ const addItemToCart = (userId, productId, quantity, callback) => {
     }
 
     const query = `
-      INSERT INTO Cart (user_id) SELECT ? WHERE NOT EXISTS (SELECT 1 FROM Cart WHERE user_id = ?);
-      SELECT id INTO @cart_id FROM Cart WHERE user_id = ?; 
-      INSERT INTO Cart_item (cart_id, product_id, quantity) 
-      VALUES (@cart_id, ?, ?) 
-      ON DUPLICATE KEY UPDATE quantity = quantity + ?;
-    `;
+    INSERT INTO Cart (user_id) SELECT ? WHERE NOT EXISTS (SELECT 1 FROM Cart WHERE user_id = ?);
+    SELECT id INTO @cart_id FROM Cart WHERE user_id = ?; 
+    INSERT INTO Cart_item (cart_id, product_id, quantity) 
+    VALUES (@cart_id, ?, ?) 
+    ON DUPLICATE KEY UPDATE quantity = quantity + ?;
+  `;
     db.query(query, [userId, userId, userId, productId, quantity, quantity], (error, results) => {
       if (error) {
-        return callback(error, null);
+        if (error.code === 'ER_NO_REFERENCED_ROW_2') {
+          return callback(new Error('Invalid product ID'), null);
+        } else {
+          return callback(error, null);
+        }
       }
       return callback(null, results.affectedRows);
     });

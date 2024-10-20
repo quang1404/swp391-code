@@ -19,13 +19,13 @@ router.get('/:id', (req, res) => {
 
 // Create pond
 router.post('/', (req, res) => {
-    const { id, name, image, size, depth, volume, num_of_drains, pump_capacity, user_id } = req.body;
+    const { name, image, size, depth, volume, num_of_drains, pump_capacity, user_id } = req.body;
 
     if (!id || !name || !image || !size || !depth || !volume || !num_of_drains || !pump_capacity || !user_id) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
 
-    Pond.createPond(id, name, image, size, depth, volume, num_of_drains, pump_capacity, user_id, (error, result) => {
+    Pond.createPond(name, image, size, depth, volume, num_of_drains, pump_capacity, user_id, (error, result) => {
         if (error) {
             console.error('Error creating pond:', error);
             return res.status(500).json({ message: 'Internal server error' });

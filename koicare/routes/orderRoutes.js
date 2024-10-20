@@ -18,7 +18,11 @@ router.post('/', verifyToken, (req, res) => {
   Order.createOrder(userId, orderItems, totalAmount, (error, orderId) => {
     if (error) {
       console.error('Error creating order:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+      if (error.code === 'ER_NO_REFERENCED_ROW_2') { 
+        return res.status(400).json({ message: 'Invalid product ID in order items' });
+      } else {
+        return res.status(500).json({ error: error.toString() });;
+      }
     }
     res.status(201).json({ message: 'Order created successfully', orderId });
   });
@@ -31,7 +35,7 @@ router.get('/:id', verifyToken, (req, res) => {
   Order.getOrderById(orderId, (error, order) => {
     if (error) {
       console.error('Error fetching order:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ error: error.toString() });;
     }
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
@@ -56,7 +60,7 @@ router.put('/:id', verifyToken, (req, res) => {
   Order.updateOrderById(orderId, updatedOrderData, (error, result) => {
     if (error) {
       console.error('Error updating order:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ error: error.toString() });;
     }
     if (result === 1) {
       res.json({ message: 'Order updated successfully' });
@@ -73,7 +77,7 @@ router.delete('/:id', verifyToken, (req, res) => {
   Order.deleteOrderById(orderId, (error, result) => {
     if (error) {
       console.error('Error deleting order:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ error: error.toString() });;
     }
     if (result === 1) {
       res.json({ message: 'Order deleted successfully' });

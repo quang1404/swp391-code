@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
         products) => {
         if (error) {
             console.error('Error fetching products:', error);
-            return res.status(500).json({ message: 'Internal server error' });
+            return res.status(500).json({ error: error.toString() });
         } else {
             res.json(products);
         }
@@ -21,7 +21,7 @@ router.get('/:id', (req, res) => {
     Product.getProductById(productId, (error, product) => {
         if (error) {
             console.error('Error fetching product:', error);
-            return res.status(500).json({ message: 'Internal server error' });
+            return res.status(500).json({ error: error.toString() });
         } else if (product) {
             res.json(product);
         } else {
@@ -32,7 +32,7 @@ router.get('/:id', (req, res) => {
 
 // Create product
 router.post('/', (req, res) => {
-    const { id, name, description, price, quantity } = req.body;
+    const { name, description, price, quantity } = req.body;
 
     if (!id || !name || !description || !price || !quantity) {
         return res.status(400).json({ message: 'Missing required fields' });
@@ -44,10 +44,10 @@ router.post('/', (req, res) => {
         return res.status(400).json({ message: 'Quantity cannot be negative' });
     }
 
-    Product.createProduct(id, name, description, price, quantity, (error, result) => {
+    Product.createProduct(name, description, price, quantity, (error, result) => {
         if (error) {
             console.error('Error creating product:', error);
-            return res.status(500).json({ message: 'Internal server error' });
+            return res.status(500).json({ error: error.toString() });
         } else {
             res.status(201).json({ message: 'Product created' });
         }
@@ -69,7 +69,7 @@ router.put('/:id', (req, res) => {
         return res.status(400).json({ message: 'Quantity cannot be negative' });
     }
 
-    Product.updateProductById(productId, name, description, price, quantity, (error, result) => {
+    Product.updateProductById(productId, name, description, price, quantity, (error, result) => { 
         if (error) {
             console.error('Error updating product:', error);
             return res.status(500).json({ message: 'Internal server error' });
@@ -87,7 +87,7 @@ router.delete('/:id', (req, res) => {
     Product.deleteProductById(productId, (error, result) => {
         if (error) {
             console.error('Error deleting product:', error);
-            return res.status(500).json({ message: 'Internal server error' });
+            return res.status(500).json({ error: error.toString() });
         } else if (result === 1) {
             res.json({ message: 'Product deleted' });
         } else {

@@ -1,5 +1,24 @@
 const db = require('../config/db'); 
 
+// Create koi growth record
+const createKoiGrowthRecord = (growth_date, age, size, weight, koi_id, callback) => {
+
+    if (!growth_date || age <= 0 || size <= 0 || weight <= 0 || !koi_id) {
+      return callback(new Error('Invalid input data. Please check all fields.'), null);
+    }
+  
+    const query = `
+      INSERT INTO Koi_growth_record (growth_date, age, size, weight, koi_id)
+      VALUES (?, ?, ?, ?, ?);
+    `;
+    db.query(query, [growth_date, age, size, weight, koi_id], (error, results) => {
+      if (error) {
+        return callback(error, null);
+      }
+      return callback(null, results.affectedRows);
+    });
+  };
+
 // Get koi growth record by ID
 const getKoiGrowthById = (id, callback) => {
     const query = `SELECT * FROM Koi_growth_record WHERE id = ?`; 
@@ -35,5 +54,6 @@ const updateKoiGrowthById = (id, updateKoiGrowthData, callback) => {
 
 module.exports = {
     getKoiGrowthById,
-    updateKoiGrowthById
+    updateKoiGrowthById,
+    createKoiGrowthRecord
 };

@@ -8,7 +8,7 @@ router.get('/:id', (req, res) => {
     Koi.getKoiById(koiId, (error, koi) => {
         if (error) {
             console.error('Error fetching koi:', error);
-            return res.status(500).json({ error: error.toString() });;
+            return res.status(500).json({ error: error.toString() });
         } else if (koi) {
             res.json(koi);
         } else {
@@ -27,7 +27,7 @@ router.post('/', (req, res) => {
     Koi.createKoi(name, image, body_shape, age, size, weight, gender, breed, origin, pond_id, (error, result) => {
         if (error) {
             console.error('Error creating koi:', error);
-            return res.status(500).json({ error: error.toString() });;
+            return res.status(500).json({ error: error.toString() });
         } else {
             res.status(201).json({ message: 'Koi created' });
         }
@@ -45,7 +45,7 @@ router.put('/:id', (req, res) => {
     Koi.updateKoiById(koiId, name, image, body_shape, age, size, weight, gender, breed, origin, pond_id, (error, result) => {
         if (error) {
             console.error('Error updating koi:', error);
-            return res.status(500).json({ error: error.toString() });;
+            return res.status(500).json({ error: error.toString() });
         } else if (result === 1) {
             res.json({ message: 'Koi updated' });
         } else {
@@ -60,7 +60,7 @@ router.delete('/:id', (req, res) => {
     Koi.deleteKoiById(koiId, (error, result) => {
         if (error) {
             console.error('Error deleting koi:', error);
-            return res.status(500).json({ error: error.toString() });;
+            return res.status(500).json({ error: error.toString() });
         } else if (result === 1) {
             res.json({ message: 'Koi deleted' });
         } else {
@@ -74,7 +74,7 @@ router.get('/', (req, res) => {
     Koi.getAllKoi((error, koi) => {
         if (error) {
             console.error('Error fetching koi:', error);
-            return res.status(500).json({ error: error.toString() });;
+            return res.status(500).json({ error: error.toString() });
         } else {
             res.json(koi);
         }
@@ -87,7 +87,7 @@ router.get('/:id/food', (req, res) => {
     Koi.getKoiWithFoodById(koiId, (error, koi) => {
         if (error) {
             console.error('Error fetching koi with food:', error);
-            return res.status(500).json({ error: error.toString() });;
+            return res.status(500).json({ error: error.toString() });
         } else if (koi) {
             res.json(koi);
         } else {

@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
   NewsBlog.getAllNewsBlogs((error, newsBlogs) => {
     if (error) {
       console.error('Error fetching news blogs:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ error: error.toString() });;
     }
     res.json(newsBlogs);
   });
@@ -19,7 +19,7 @@ router.get('/:id', (req, res) => {
   NewsBlog.getNewsBlogById(newsBlogId, (error, newsBlog) => {
     if (error) {
       console.error('Error fetching news blog:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ error: error.toString() });;
     }
     if (!newsBlog) {
       return res.status(404).json({ message: 'News blog not found' });
@@ -39,7 +39,7 @@ router.post('/', (req, res) => {
   NewsBlog.createNewsBlog(image, title, content, date_published, user_id, (error, result) => {
     if (error) {
       console.error('Error creating news blog:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ error: error.toString() });;
     }
     res.status(201).json({ message: 'News blog created successfully' });
   });
@@ -57,7 +57,7 @@ router.put('/:id', (req, res) => {
   NewsBlog.updateNewsBlogById(newsBlogId, image, title, content, date_published, user_id, (error, result) => {
     if (error) {
       console.error('Error updating news blog:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ error: error.toString() });;
     }
     if (result === 1) {
       res.json({ message: 'News blog updated successfully' });
@@ -73,7 +73,7 @@ router.delete('/:id', (req, res) => {
   NewsBlog.deleteNewsBlogById(newsBlogId, (error, result) => {
     if (error) {
       console.error('Error deleting news blog:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ error: error.toString() });;
     }
     if (result === 1) {
       res.json({ message: 'News blog deleted successfully' });
