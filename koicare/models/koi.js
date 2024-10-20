@@ -59,37 +59,21 @@ const updateKoiById = (id, name, image, body_shape, age, size, weight, gender, b
 
 // Delete Koi by ID
 const deleteKoiById = (id, callback) => {
-    db.beginTransaction((err) => {
-        if (err) {
-            return callback(err, null);
+    const deleteGrowthRecordsQuery = `DELETE FROM Koi_growth_record WHERE koi_id = ?`;
+    db.query(deleteGrowthRecordsQuery, [id], (error, deleteResult) => {
+      if (error) {
+        return callback(error, null); 
+      }
+  
+      const deleteKoiQuery = `DELETE FROM Koi WHERE id = ?`;
+      db.query(deleteKoiQuery, [id], (error, koiResult) => {
+        if (error) {
+          return callback(error, null); 
         }
-        try {
-            const deleteGrowthRecordsQuery = `DELETE FROM Koi_growth_record WHERE koi_id = ?`;
-            db.query(deleteGrowthRecordsQuery, [id], (error, deleteResult) => {
-                if (error) {
-                    throw error;
-                }
-                const deleteKoiQuery = `DELETE FROM Koi WHERE id = ?`;
-                db.query(deleteKoiQuery, [id], (error, koiResult) => {
-                    if (error) {
-                        throw error;
-                    }
-                    db.commit((err) => {
-                        if (err) {
-                            throw err;
-                        }
-                        callback(null, koiResult.affectedRows);
-                    });
-                });
-            });
-        } catch (error) {
-            db.rollback(() => {
-                console.error('Error deleting koi:', error);
-                callback(error, null);
-            });
-        }
+        callback(null, koiResult.affectedRows); 
+      });
     });
-};
+  };
 
 // Get all koi
 const getAllKoi = (callback) => {
