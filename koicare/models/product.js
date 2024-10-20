@@ -17,7 +17,7 @@ const getProductById = (id, callback) => {
 };
 
 // Create product
-const createProduct = (id, name, description, price, quantity, callback) => {
+const createProduct = (name, description, price, quantity, callback) => {
     
     if (!name || !description || !price || !quantity) {
         return callback(new Error('Missing required fields'), null);
@@ -32,7 +32,7 @@ const createProduct = (id, name, description, price, quantity, callback) => {
     const query = `
         INSERT INTO Product (id, name, description, price, quantity)
         VALUES (?, ?, ?, ?, ?);`;
-    db.query(query, [id, name, description, price, quantity], (error, results) => {
+    db.query(query, [name, description, price, quantity], (error, results) => {
         if (error) {
             return callback(error, null);
         }
@@ -41,7 +41,7 @@ const createProduct = (id, name, description, price, quantity, callback) => {
 };
 
 // Update product by ID
-const updateProductById = (id, name, description, price, quantity, callback) => {
+const updateProductById = (name, description, price, quantity, callback) => {
 
     if (!name || !description || !price || !quantity) {
         return callback(new Error('Missing required fields'), null);
@@ -56,7 +56,7 @@ const updateProductById = (id, name, description, price, quantity, callback) => 
     const query = `UPDATE Product
     SET name = ?, description = ?, price = ?, quantity = ?
     WHERE id = ?;`;
-    db.query(query, [name, description, price, quantity, id], (error, results) => {
+    db.query(query, [name, description, price, quantity], (error, results) => {
         if (error) {
             return callback(error, null);
         }
