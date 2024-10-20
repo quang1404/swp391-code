@@ -9,9 +9,9 @@ router.get('/', verifyToken, (req, res) => {
   Dashboard.getDashboardData(userId, (error, data) => {
     if (error) {
       console.error('Error fetching dashboard data:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ error: error.toString() });;
     }
-    res.json(data);
+    res.json(data); 
   });
 });
 
