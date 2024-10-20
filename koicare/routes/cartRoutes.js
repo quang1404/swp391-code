@@ -1,3 +1,8 @@
+const express = require('express');
+const router = express.Router();
+const Cart = require('../models/cart')
+const { verifyToken } = require('../middleware/authMiddleware'); 
+
 // Get cart by user ID
 router.get('/', verifyToken, (req, res) => {
   const userId = req.userId;
