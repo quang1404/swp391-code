@@ -61,8 +61,8 @@ router.delete('/:id', (req, res) => {
         if (error) {
             console.error('Error deleting koi:', error);
             return res.status(500).json({ error: error.toString() });
-        } else if (result === 1) {
-            res.json({ message: 'Koi deleted' });
+        } else if (result !== null) {
+            res.json({ message: 'Koi and related growth records deleted successfully' }); 
         } else {
             res.status(404).json({ message: 'Koi not found' });
         }

@@ -38,7 +38,7 @@ paths:
         "201":
           description: User registered successfully
         "400":
-          description: Bad Request (e.g., missing fields, passwords don't match)
+          description: Bad Request
         "500":
           description: Internal Server Error
 
@@ -84,7 +84,7 @@ paths:
                       role_id:
                         type: integer
         "400":
-          description: Bad Request (e.g., missing fields)
+          description: Bad Request
         "401":
           description: Unauthorized (invalid credentials)
         "500":
@@ -217,6 +217,19 @@ paths:
           description: Role not found
 
   /koi:
+    get:
+      summary: Get all koi
+      tags:
+        - Koi
+      responses:
+        "200":
+          description: A list of all koi
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Koi"
     post:
       summary: Create a new koi
       tags:
@@ -257,44 +270,6 @@ paths:
           description: Bad Request 
         "500":
           description: Internal server error
-    get:
-      summary: Get all koi
-      tags:
-        - Koi
-      responses:
-        "200":
-          description: A list of all koi
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
-                      type: string
-                    image:
-                      type: string
-                    body_shape:
-                      type: string
-                    age:
-                      type: integer
-                    size:
-                      type: number
-                      format: float
-                    weight:
-                      type: number
-                      format: float
-                    gender:
-                      type: string
-                    breed:
-                      type: string
-                    origin:
-                      type: string                  
-                    pond_id:
-                      type: integer
 
   /koi/{id}:
     get:
@@ -314,34 +289,11 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
-                  image:
-                    type: string
-                  body_shape:
-                    type: string
-                  age:
-                    type: integer
-                  size:
-                    type: number
-                    format: float
-                  weight:
-                    type: number
-                    format: float
-                  gender:
-                    type: string
-                  breed:
-                    type: string
-                  origin:
-                    type: string
-                  pond_id:
-                    type: integer
+                $ref: "#/components/schemas/Koi"
         "404":
           description: Koi not found
+        "500":
+          description: Internal server error
 
     put:
       summary: Update koi by ID
@@ -359,35 +311,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                image:
-                  type: string
-                body_shape:
-                  type: string
-                age:
-                  type: integer
-                size:
-                  type: number
-                  format: float
-                weight:
-                  type: number
-                  format: float
-                gender:
-                  type: string
-                breed:
-                  type: string
-                origin:
-                  type: string
-                pond_id:
-                  type: integer
+              $ref: "#/components/schemas/Koi"
       responses:
         "200":
           description: Koi updated successfully
         "404":
           description: Koi not found
+        "500":
+          description: Internal server error
 
     delete:
       summary: Delete koi by ID
@@ -405,6 +336,8 @@ paths:
           description: Koi deleted successfully
         "404":
           description: Koi not found
+        "500":
+          description: Internal server error
 
   /koiGrowth:
     post:
@@ -435,7 +368,7 @@ paths:
         "201":
           description: Koi growth record created successfully
         "400":
-          description: Bad Request 
+          description: Bad Request
         "500":
           description: Internal server error
 
@@ -541,6 +474,21 @@ paths:
           description: Internal server error
 
   /pond:
+    get:
+      summary: Get all ponds
+      tags:
+        - Pond
+      responses:
+        "200":
+          description: A list of all ponds
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Pond"
+        "500":
+          description: Internal server error
     post:
       summary: Create a new pond
       tags:
@@ -580,43 +528,6 @@ paths:
         "500":
           description: Internal server error
 
-    get:
-      summary: Get all ponds
-      tags:
-        - Pond
-      responses:
-        "200":
-          description: A list of all ponds
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
-                      type: string
-                    image:
-                      type: string
-                    size:
-                      type: number
-                      format: float
-                    depth:
-                      type: number
-                      format: float
-                    volume:
-                      type: number
-                      format: float
-                    num_of_drains:
-                      type: integer
-                    pump_capacity:
-                      type: number
-                      format: float
-                    user_id:
-                      type: integer
-
   /pond/{id}:
     get:
       summary: Get pond by ID
@@ -635,32 +546,11 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
-                  image:
-                    type: string
-                  size:
-                    type: number
-                    format: float
-                  depth:
-                    type: number
-                    format: float
-                  volume:
-                    type: number
-                    format: float
-                  num_of_drains:
-                    type: integer
-                  pump_capacity:
-                    type: number
-                    format: float
-                  user_id:
-                    type: integer
+                $ref: "#/components/schemas/Pond"
         "404":
           description: Pond not found
+        "500":
+          description: Internal server error
 
     put:
       summary: Update pond by ID
@@ -698,11 +588,14 @@ paths:
                 pump_capacity:
                   type: number
                   format: float
+
       responses:
         "200":
           description: Pond updated successfully
         "404":
           description: Pond not found
+        "500":
+          description: Internal server error
 
     delete:
       summary: Delete pond by ID
@@ -720,10 +613,12 @@ paths:
           description: Pond deleted successfully
         "404":
           description: Pond not found
+        "500":
+          description: Internal server error
 
   /pond/{id}/details:
     get:
-      summary: Get the required amount of salt
+      summary: Get pond details by ID
       tags:
         - Pond
       parameters:
@@ -756,6 +651,22 @@ paths:
           description: Internal server error
 
   /product:
+    get:
+      summary: Get all products
+      tags:
+        - Product
+      responses:
+        "200":
+          description: A list of all products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+
+        "500":
+          description: Internal server error
     post:
       summary: Create a new product
       tags:
@@ -767,8 +678,6 @@ paths:
             schema:
               type: object
               properties:
-                id:
-                  type: integer
                 name:
                   type: string
                 description:
@@ -785,32 +694,6 @@ paths:
           description: Bad Request 
         "500":
           description: Internal server error
-
-    get:
-      summary: Get all products
-      tags:
-        - Product
-      responses:
-        "200":
-          description: A list of all products
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
-                      type: string
-                    description:
-                      type: string
-                    price:
-                      type: number
-                      format: float
-                    quantity:
-                      type: integer
 
   /product/{id}:
     get:
@@ -830,24 +713,15 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
-                  description:
-                    type: string
-                  price:
-                    type: number
-                    format: float
-                  quantity:
-                    type: integer
+                $ref: "#/components/schemas/Product"
         "404":
           description: Product not found
+        "500":
+          description: Internal server error
 
     put:
       summary: Update product by ID
+
       tags:
         - Product
       parameters:
@@ -878,6 +752,8 @@ paths:
           description: Product updated successfully
         "404":
           description: Product not found
+        "500":
+          description: Internal server error
 
     delete:
       summary: Delete product by ID
@@ -895,8 +771,25 @@ paths:
           description: Product deleted successfully
         "404":
           description: Product not found
+        "500":
+          description: Internal server error
 
   /waterValue:
+    get:
+      summary: Get all water parameter values
+      tags:
+        - Water Value
+      responses:
+        "200":
+          description: A list of all water parameter values
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WaterValue"
+        "500":
+          description: Internal server error
     post:
       summary: Create a new water parameter value
       tags:
@@ -922,30 +815,6 @@ paths:
           description: Bad Request 
         "500":
           description: Internal server error
-
-    get:
-      summary: Get all water parameter values
-      tags:
-        - Water Value
-      responses:
-        "200":
-          description: A list of all water parameter values
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
-                  param_value:
-                    type: number
-                    format: float
-                  water_parameters_id:
-                    type: integer
 
   /waterValue/{id}/{name}:
     get:
@@ -975,9 +844,11 @@ paths:
                 properties:
                   param_value:
                     type: number
-                format: float
+                    format: float
         "404":
           description: Water parameter value not found
+        "500":
+          description: Internal server error
 
     put:
       summary: Update water parameter value by ID and name
@@ -1011,6 +882,8 @@ paths:
           description: Water parameter value updated successfully
         "404":
           description: Water parameter value not found
+        "500":
+          description: Internal server error
 
     delete:
       summary: Delete water parameter value by ID and name
@@ -1034,6 +907,8 @@ paths:
           description: Water parameter value deleted successfully
         "404":
           description: Water parameter value not found
+        "500":
+          description: Internal server error
 
   /order:
     post:
@@ -1189,36 +1064,53 @@ paths:
     get:
       summary: Get all news blogs
       tags:
-        - NewsBlog
+        - News Blog
       responses:
-        "200":
+        '200':
           description: A list of all news blogs
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    image:
-                      type: string
-                    title:
-                      type: string
-                    content:
-                      type: string
-                    date_published:
-                      type: string
-                      format: date-time
-                    user_id:
-                      type: integer
+                  $ref: '#/components/schemas/NewsBlog'
+        '500':
+          description: Internal server error
+    post:
+      summary: Create a new news_blog
+      tags:
+        - News Blog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                title:
+                  type: string
+                content:
+                  type: string
+                date_published:
+                  type: string
+                  format: date-time
+                user_id:
+                  type: integer
+      responses:
+        '201':
+          description: News blog created successfully
+        '400':
+          description: Bad Request 
+        '500':
+          description: Internal server error
 
   /newsBlog/{id}:
     get:
       summary: Get news blog by ID
       tags:
-        - NewsBlog
+        - News Blog
       parameters:
         - in: path
           name: id
@@ -1227,33 +1119,21 @@ paths:
           required: true
           description: ID of the news blog
       responses:
-        "200":
+        '200':
           description: News blog retrieved successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  image:
-                    type: string
-                  title:
-                    type: string
-                  content:
-                    type: string
-                  date_published:
-                    type: string
-                    format: date-time
-                  user_id:
-                    type: integer
-        "404":
+                $ref: '#/components/schemas/NewsBlog'
+        '404':
           description: News blog not found
+        '500':
+          description: Internal server error
 
     put:
       summary: Update news blog by ID
       tags:
-        - NewsBlog
+        - News Blog
       parameters:
         - in: path
           name: id
@@ -1278,15 +1158,17 @@ paths:
                   type: string
                   format: date-time
       responses:
-        "200":
+        '200':
           description: News blog updated successfully
-        "404":
+        '404':
           description: News blog not found
+        '500':
+          description: Internal server error
 
     delete:
       summary: Delete news blog by ID
       tags:
-        - NewsBlog
+        - News Blog
       parameters:
         - in: path
           name: id
@@ -1295,10 +1177,12 @@ paths:
           required: true
           description: ID of the news blog
       responses:
-        "200":
+        '200':
           description: News blog deleted successfully
-        "404":
+        '404':
           description: News blog not found
+        '500':
+          description: Internal server error
 
   /cart:
     get:
@@ -1413,3 +1297,102 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+  schemas:
+    Koi:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        image:
+          type: string
+        body_shape:
+          type: string
+        age:
+          type: integer
+        size:
+          type: number
+          format: float
+        weight:
+          type: number
+          format: float
+        gender:
+          type: string
+        breed:
+          type: string
+        origin:
+          type: string
+        pond_id:
+          type: integer
+
+    Pond:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        image:
+          type: string
+        size:
+          type: number
+          format: float
+        depth:
+          type: number
+          format: float
+        volume:
+          type: number
+          format: float
+        num_of_drains:
+          type: integer
+        pump_capacity:
+          type: number
+          format: float
+        user_id:
+          type: integer
+
+    Product:   
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: float
+        quantity:
+          type: integer
+
+    WaterValue:  
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        param_value:
+          type: number
+          format: float
+        water_parameters_id:
+          type: integer
+
+    NewsBlog: 
+      type: object
+      properties:
+        id:
+          type: integer
+        image:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        date_published:
+          type: string
+          format: date-time
+        user_id:
+          type: integer
