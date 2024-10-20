@@ -110,7 +110,7 @@ CREATE TABLE `Cart` (
 );
 
 CREATE TABLE `Cart_item` (
-    `cart_id` BIGINT auto_increment,
+    `cart_id` BIGINT ,
     `product_id` BIGINT ,
     `quantity` INT ,
     PRIMARY KEY (`cart_id`, `product_id`), 
