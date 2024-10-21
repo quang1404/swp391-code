@@ -21,8 +21,8 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
     const { name, image, size, depth, volume, num_of_drains, pump_capacity, user_id } = req.body;
 
-    if (!id || !name || !image || !size || !depth || !volume || !num_of_drains || !pump_capacity || !user_id) {
-        return res.status(400).json({ message: 'Missing required fields' });
+    if (!name || !image || !size || !depth || !volume || !num_of_drains || !pump_capacity || !user_id) {
+      return res.status(400).json({ message: 'Missing required fields' });
     }
 
     Pond.createPond(name, image, size, depth, volume, num_of_drains, pump_capacity, user_id, (error, result) => {
@@ -62,6 +62,9 @@ router.delete('/:id', (req, res) => {
     Pond.deletePondById(pondId, (error, result) => {
         if (error) {
             console.error('Error deleting pond:', error);
+            if (error.message.startsWith('Cannot delete pond.')) { 
+              return res.status(400).json({ message: error.message }); 
+            } 
             return res.status(500).json({ message: 'Internal server error' });
         } else if (result === 1) {
             res.json({ message: 'Pond deleted' });

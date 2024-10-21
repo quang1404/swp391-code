@@ -35,16 +35,16 @@ const createPond = (name, image, size, depth, volume, num_of_drains, pump_capaci
 };
 
 // Update pond by ID
-const updatePondById = (id, name, image, size, depth, volume, num_of_drains, pump_capacity, user_id, callback) => {
-  // Input validation
-  if (!name || !image || size <= 0 || depth <= 0 || volume <= 0 || num_of_drains <= 0 || pump_capacity <= 0 || !user_id) {
+const updatePondById = (id, name, image, size, depth, volume, num_of_drains, pump_capacity, callback) => {
+
+  if (!name || !image || size <= 0 || depth <= 0 || volume <= 0 || num_of_drains <= 0 || pump_capacity <= 0) {
     return callback(new Error('Invalid input data. Please check all fields.'), null);
   }
 
   const query = `UPDATE Pond  
-    SET name = ?, image = ?, size = ?, depth = ?, volume = ?, num_of_drains = ?, pump_capacity = ?, user_id = ?
-    WHERE id = ?;`;
-  db.query(query, [name, image, size, depth, volume, num_of_drains, pump_capacity, user_id, id], (error, results) => {
+  SET name = ?, image = ?, size = ?, depth = ?, volume = ?, num_of_drains = ?, pump_capacity = ? 
+  WHERE id = ?;`;
+  db.query(query, [name, image, size, depth, volume, num_of_drains, pump_capacity, id], (error, results) => {
     if (error) {
       return callback(error, null);
     }
@@ -54,9 +54,12 @@ const updatePondById = (id, name, image, size, depth, volume, num_of_drains, pum
 
 // Delete pond by ID
 const deletePondById = (id, callback) => {
-  const query = `DELETE FROM Pond WHERE id = ?;`;
+  const query = `DELETE FROM Pond WHERE id = ?`;
   db.query(query, [id], (error, results) => {
     if (error) {
+      if (error.code === "ER_ROW_IS_REFERENCED_2") {
+        return callback(new Error('Cannot delete pond. There are koi associated with this pond.'), null);
+      }
       return callback(error, null);
     }
     if (results.affectedRows === 0) {
